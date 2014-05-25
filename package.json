@@ -9,11 +9,10 @@
   "keywords": [
     "CMS"
   ],
-  "private": "true",
-  "url":"git+ssh://bitbucket.org:jacoborus/hardwire.git",
+  "url": "https://github.com/jacoborus/hardwire",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/jacoborus/hardwire.git"
+    "url": "git@github.com:jacoborus/hardwire.git"
   },
   "dependencies": {
     "body-parser": "^1.0.2",
