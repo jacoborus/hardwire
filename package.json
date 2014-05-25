@@ -1,0 +1,53 @@
+{
+  "name": "hardwire",
+  "version": "0.0.1",
+  "description": "CMS framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "CMS"
+  ],
+  "private": "true",
+  "url":"git+ssh://bitbucket.org:jacoborus/hardwire.git",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/jacoborus/hardwire.git"
+  },
+  "dependencies": {
+    "body-parser": "^1.0.2",
+    "compression": "^1.0.2",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^0.4.1",
+    "connect-timeout": "^1.1.0",
+    "cookie-parser": "^1.1.0",
+    "cookies": "^0.4.1",
+    "debug": "^0.7.4",
+    "deep-extend": "^0.2.8",
+    "errorhandler": "^1.0.1",
+    "express": "^4.3.1",
+    "express-session": "^1.2.0",
+    "filesaver": "0.0.9",
+    "hogan.js": "^2.0.0",
+    "jade": "^1.3.1",
+    "method-override": "^1.0.2",
+    "mkdirp": "^0.5.0",
+    "mocha": "^1.19.0",
+    "mongoose": "^3.8.11",
+    "mongoose-validator": "^0.2.2",
+    "morgan": "^1.0.1",
+    "multer": "0.0.7",
+    "passport": "^0.1.18",
+    "passport-local": "^1.0.0",
+    "sendmail": "^0.2.1",
+    "static-favicon": "^1.0.2",
+    "winston": "^0.7.3",
+    "wiretree": "^0.2.4"
+  },
+  "devDependencies": {
+    "mocha": "^1.17.1"
+  },
+  "author": "Jacobo Tabernero - jacoborus - jacobo@xarope.eu",
+  "license": "MIT"
+}
