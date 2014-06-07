@@ -1,7 +1,5 @@
 'use strict';
 
-var filtra;
-
 exports.wiretree = function (app, config, log, User) {
 	return {
 		logout: function (req, res) {
@@ -36,11 +34,3 @@ exports.wiretree = function (app, config, log, User) {
 	};
 };
 
-filtra = {
-	update: function (datos) {
-		return {
-			avatar: 'avatar-' + datos.id + '.jpg',
-			nombre: datos.nombre || null
-		};
-	}
-};

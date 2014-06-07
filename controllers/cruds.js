@@ -1,8 +1,5 @@
 'use strict';
 
-var fs = require('fs');
-
-
 var cleanQuery = function (query) {
 	var prop, val;
 	for (prop in query) {
@@ -51,30 +48,30 @@ exports.wiretree = function (log, models, storeFiles) {
 	};
 
 	mod.update = function (id, modelName, body,	files, callback) {
-		var i;
 		models[ modelName ].findById( id, function (err, doc) {
+			var i;
 			for (i in body) {
 				doc[i] = body[i];
-				doc.validate( function (errValidate) {
-					if (errValidate) {
-						callback( errValidate );
-					} else {
-						storeFiles.add( modelName, files, doc, function (errStore) {
-							if ( errStore ) {
-								callback( errStore );
-							} else {
-								doc.save( function (err, data) {
-									if (err) {
-										callback( err );
-									} else {
-										callback( null, data );
-									}
-								});
-							}
-						});
-					}
-				});
 			}
+			doc.validate( function (errValidate) {
+				if (errValidate) {
+					callback( errValidate );
+				} else {
+					storeFiles.add( modelName, files, doc, function (errStore) {
+						if ( errStore ) {
+							callback( errStore );
+						} else {
+							doc.save( function (err, data) {
+								if (err) {
+									callback( err );
+								} else {
+									callback( null, data );
+								}
+							});
+						}
+					});
+				}
+			});
 		});
 	};
 
