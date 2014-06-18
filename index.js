@@ -35,7 +35,7 @@ var loadConfig = function (dir) {
 
 
 // Create framework
-var subStuff = function (dir) {
+var hardwire = function (dir) {
 
 	var tree = new Wiretree( __dirname );
 	var app, conf;
@@ -92,9 +92,9 @@ var subStuff = function (dir) {
 };
 
 
-// expose framework version
-subStuff.version = pkg.version;
+// expose CMS version
+hardwire.version = pkg.version;
 
 
-// expose `subStuff()`
-module.exports = subStuff;
+// expose `hardwire()`
+module.exports = hardwire;

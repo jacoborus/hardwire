@@ -5,12 +5,9 @@ exports.wiretree = function (app, config, log, User) {
 		logout: function (req, res) {
 			req.logout();
 			delete req.session.profile;
-			req.flash('success', 'Sesión cerrada correctamente');
 			return res.redirect('/');
 		},
 		session: function (req, res) {
-			console.log( 'req.session.passport.user' );
-			console.log( req.session.passport.user );
 			User.find({
 				_id: req.session.passport.user
 			}, function (err, data) {

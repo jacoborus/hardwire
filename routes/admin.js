@@ -14,13 +14,17 @@ module.exports.wiretree = function (app, express, models, control) {
 	 * ADMIN    ----------------------------------------------------------------------
 	 */
 	app.route( '/admin' ).get( reqAdmin, control.admin.index );
+	/*	 *  docs *	 */
 	app.route( '/admin/docs/:model' ).get( reqAdmin, control.admin.docs.search );
 	app.route( '/admin/docs/:model/nuevo' ).get( reqAdmin, control.admin.docs.nuevo );
 	app.route( '/admin/docs/:model' ).post( reqAdmin, control.admin.docs.create );
 	app.route( '/admin/docs/:model/:id' ).get( reqAdmin, control.admin.docs.read );
-	app.route( '/admin/docs/:model/:id/editar' ).get( reqAdmin, control.admin.docs.editar );
-	app.route( '/admin/docs/:model/:id' ).post( reqAdmin, control.admin.docs.update );
+	app.route( '/admin/docs/:model/:id/edit' ).get( reqAdmin, control.admin.docs.edit );
+	app.route( '/admin/docs/:model/:id' ).put( reqAdmin, control.admin.docs.update );
 	app.route( '/admin/docs/:model/:id' ).delete( reqAdmin, control.admin.docs.destroy );
+	/*	 * keyval docs *	 */
+	app.route( '/admin/keyval/:model/:id/edit' ).get( reqAdmin, control.admin.keyval.edit );
+	app.route( '/admin/keyval/:model/:id' ).put( reqAdmin, control.admin.keyval.update );
 
 	/*
 	 * APP PARAMS    ---------------------------------------------
