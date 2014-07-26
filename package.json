@@ -1,6 +1,6 @@
 {
   "name": "hardwire",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "description": "CMS framework",
   "main": "index.js",
   "scripts": {
@@ -35,12 +35,13 @@
     "mongoose-validator": "^0.2.2",
     "morgan": "^1.0.1",
     "multer": "^0.1.2",
+    "ncp": "^0.6.0",
     "passport": "^0.2.0",
     "passport-local": "^1.0.0",
     "sendmail": "^0.2.1",
     "static-favicon": "^1.0.2",
     "winston": "^0.7.3",
-    "wiretree": "^0.3.2"
+    "wiretree": "^0.4.0"
   },
   "devDependencies": {
     "mocha": "^1.19.0"

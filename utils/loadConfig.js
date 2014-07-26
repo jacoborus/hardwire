@@ -6,7 +6,7 @@ module.exports = function (dir) {
 	var env = process.env.NODE_ENV || 'default',
 		envConfig, configDir;
 
-	configDir =  path.resolve( dir, 'config/');
+	configDir = path.resolve( dir, 'config/');
 	var config = require( path.resolve( configDir,  'default.json' ));
 	config.folder = dir;
 

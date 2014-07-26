@@ -8,3 +8,4 @@ datapack
 .gulp*
 boilerplates/**/app/public
 npm-debug.log
+build

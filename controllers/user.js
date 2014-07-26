@@ -8,12 +8,12 @@ exports.wiretree = function (app, config, log, UserModel) {
 			delete req.session.profile;
 			return res.redirect('/');
 		},
-		session: function (req, res) {
+		session: function (req, res, next) {
 			User.find({
 				_id: req.session.passport.user
 			}, function (err, data) {
 				if (err) {
-					console.log(err);
+					next(err);
 				} else {
 					req.session.profile = data[0];
 				}

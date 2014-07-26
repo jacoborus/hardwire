@@ -9,106 +9,115 @@ var express = require('express'),
 	pkg = require('./package.json'),
 	Wiretree = require('wiretree'),
 	mongoose = require('mongoose'),
-	loadConfig = require('./utils/loadConfig.js');
+	loadConfig = require('./utils/loadConfig.js'),
+	builder = require( './utils/buildviews.js' ),
+	fs = require( 'fs' );
+
+
+
 
 
 // Create framework
 var hardwire = function (dir) {
 
-	var tree = new Wiretree( __dirname );
-	var app, conf;
+	var tree = new Wiretree( dir ),
+		conf;
 
-	conf = loadConfig(dir);
-	conf.rootPath = dir;
+	var loadFolder = function (plugName, folder, group, suffix, cb) {
+		folder = './plugins/' + plugName + '/' + folder;
+		fs.exists( folder, function (exists) {
+			if (exists && fs.lstatSync( folder ).isDirectory()) {
+				tree.folder( folder, {
+					group : group,
+					suffix: suffix
+				});
+			}
+			cb();
+		});
+	};
 
-	tree.add( conf, 'config' );
+	var app = express();
 
-	//allow override of app
-	app = express();
-	tree.add( tree, 'tree' );
-	tree.add( mongoose, 'mongoose');
-	tree.add( app, 'app' );
-	tree.add( express, 'express' );
-//	tree.load( path.resolve( conf.folder, 'app/router/index.js' ), 'router' );
-	tree.folder( path.resolve( __dirname, 'lib' ));
-
-
-	/* - LOAD CORE - */
-	// Models
-	tree.folder( path.resolve( __dirname, 'models' ), {
-		group : 'models',
-		suffix: 'Model'
-	});
-
-	// Controllers
-	tree.folder( path.resolve( __dirname, 'controllers' ), {
-		group: 'control',
-		suffix: 'Control'
-	});
-
-	// Routes
-	tree.folder( path.resolve( __dirname, 'routes' ), {
-		group: 'router',
-		suffix: 'Router'
-	});
-
-
-	/* - LOAD PLUGINS - */
-	var plugin;
-	if (conf.plugins) {
-
+	var loadApp = function () {
+		/* - LOAD APP - */
 		// Models
-		for (plugin in conf.plugins) {
-			tree.folder( './app/' + plugin + '/models', {
-				group : 'models',
-				suffix: 'Model'
-			});
-		}
+		tree.folder( './app/models', {
+			group : 'models',
+			suffix: 'Model'
+		})
 
 		// Controllers
-		for (plugin in conf.plugins) {
-			tree.folder( './app/' + plugin + '/controllers', {
-				group : 'control',
-				suffix: 'Control'
-			});
-		}
+		.folder( './app/controllers', {
+			group : 'control',
+			suffix: 'Control'
+		})
 
 		// Routes
-		for (plugin in conf.plugins) {
-			tree.folder( './app/' + plugin + 'routes', {
-				group: 'router',
-				suffix: 'Router'
-			});
-		}
-	}
+		.folder( './app/routes', {
+			group: 'router',
+			suffix: 'Router'
+		}).exec( function () {
+
+			tree.get( 'dal' );
+			tree.get( 'views' );
+			tree.get( 'passp' );
+			tree.get( 'middleware' );
+			tree.get( 'router' );
+			console.log( 'listening port ' + conf.port );
+			app.listen( conf.port );
+		});
+	};
+
+	conf = loadConfig( dir );
+	conf.rootPath = dir;
+
+	// build views and public files
+	builder( conf );
 
 
-	/* - LOAD APP - */
-	// Models
-	tree.folder( './app/models', {
+	tree
+	.add( conf, 'config' )
+	.add( tree, 'tree' )
+	.add( mongoose, 'mongoose')
+	.add( app, 'app' )
+	.add( express, 'express' )
+	.folder( path.resolve( __dirname, 'lib' ))
+	// core models
+	.folder( path.resolve( __dirname, 'models' ), {
 		group : 'models',
 		suffix: 'Model'
-	});
-
-	// Controllers
-	tree.folder( './app/controllers', {
-		group : 'control',
+	})
+	// core controllers
+	.folder( path.resolve( __dirname, 'controllers' ), {
+		group: 'control',
 		suffix: 'Control'
-	});
-
-	// Routes
-	tree.folder( './app/routes', {
+	})
+	// core routes
+	.folder( path.resolve( __dirname, 'routes' ), {
 		group: 'router',
 		suffix: 'Router'
-	});
+	})
 
-	tree.get( 'dal' );
-	tree.get( 'views' );
-	tree.get( 'passp' );
-	tree.get( 'middleware' );
-	tree.get( 'router' );
-	console.log( 'listening port ' + conf.port );
-	app.listen( conf.port );
+	.exec( function () {
+		/* - LOAD PLUGINS - */
+		var i, count = 0;
+		if (conf.plugins) {
+			for (i in conf.plugins) {
+				loadFolder( conf.plugins[i], 'models', 'models', 'Model', function () {
+					loadFolder( conf.plugins[i], 'controllers', 'control', 'Control', function () {
+						loadFolder( conf.plugins[i], 'routes', 'router', 'Router', function () {
+							count++;
+							if (count === conf.plugins.length) {
+								loadApp();
+							}
+						});
+					});
+				});
+			}
+		} else {
+			loadApp();
+		}
+	});
 };
 
 
