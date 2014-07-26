@@ -5,42 +5,21 @@
 // module dependencies
 
 var express = require('express'),
-	fs = require('fs'),
 	path = require('path'),
 	pkg = require('./package.json'),
-	deepExtend = require('deep-extend'),
 	Wiretree = require('wiretree'),
-	mongoose = require('mongoose');
-
-
-var loadConfig = function (dir) {
-	var env = process.env.NODE_ENV || 'default',
-		envConfig, configDir;
-
-	configDir =  path.resolve( dir, 'config/');
-	var config = require( path.resolve( configDir,  'default.json' ));
-	config.folder = dir;
-
-	if (env !== 'default') {
-		if (fs.existsSync( path.resolve( configDir , env + '.json' ))) {
-			envConfig = require( path.resolve( configDir , env + '.json' ));
-			return deepExtend(config, envConfig);
-		} else {
-			return config;
-		}
-	} else {
-		return config;
-	}
-};
+	mongoose = require('mongoose'),
+	loadConfig = require('./utils/loadConfig.js');
 
 
 // Create framework
-var subStuff = function (dir) {
+var hardwire = function (dir) {
 
 	var tree = new Wiretree( __dirname );
 	var app, conf;
 
 	conf = loadConfig(dir);
+	conf.rootPath = dir;
 
 	tree.add( conf, 'config' );
 
@@ -53,30 +32,71 @@ var subStuff = function (dir) {
 //	tree.load( path.resolve( conf.folder, 'app/router/index.js' ), 'router' );
 	tree.folder( path.resolve( __dirname, 'lib' ));
 
-	// MODEL
+
+	/* - LOAD CORE - */
+	// Models
 	tree.folder( path.resolve( __dirname, 'models' ), {
-		group : 'models'
+		group : 'models',
+		suffix: 'Model'
 	});
 
-	tree.folder( './app/models', {
-		group : 'models'
-	});
-
-	// CONTROLLER
+	// Controllers
 	tree.folder( path.resolve( __dirname, 'controllers' ), {
-		group: 'control'
+		group: 'control',
+		suffix: 'Control'
 	});
 
-	tree.folder( './app/controllers', {
-		group : 'control'
-	});
-
-	// ROUTER
+	// Routes
 	tree.folder( path.resolve( __dirname, 'routes' ), {
 		group: 'router',
 		suffix: 'Router'
 	});
 
+
+	/* - LOAD PLUGINS - */
+	var plugin;
+	if (conf.plugins) {
+
+		// Models
+		for (plugin in conf.plugins) {
+			tree.folder( './app/' + plugin + '/models', {
+				group : 'models',
+				suffix: 'Model'
+			});
+		}
+
+		// Controllers
+		for (plugin in conf.plugins) {
+			tree.folder( './app/' + plugin + '/controllers', {
+				group : 'control',
+				suffix: 'Control'
+			});
+		}
+
+		// Routes
+		for (plugin in conf.plugins) {
+			tree.folder( './app/' + plugin + 'routes', {
+				group: 'router',
+				suffix: 'Router'
+			});
+		}
+	}
+
+
+	/* - LOAD APP - */
+	// Models
+	tree.folder( './app/models', {
+		group : 'models',
+		suffix: 'Model'
+	});
+
+	// Controllers
+	tree.folder( './app/controllers', {
+		group : 'control',
+		suffix: 'Control'
+	});
+
+	// Routes
 	tree.folder( './app/routes', {
 		group: 'router',
 		suffix: 'Router'
@@ -87,14 +107,14 @@ var subStuff = function (dir) {
 	tree.get( 'passp' );
 	tree.get( 'middleware' );
 	tree.get( 'router' );
-	console.log('listening port 3000');
-	app.listen(3000);
+	console.log( 'listening port ' + conf.port );
+	app.listen( conf.port );
 };
 
 
-// expose framework version
-subStuff.version = pkg.version;
+// expose CMS version
+hardwire.version = pkg.version;
 
 
-// expose `subStuff()`
-module.exports = subStuff;
+// expose `hardwire()`
+module.exports = hardwire;

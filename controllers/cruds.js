@@ -24,7 +24,7 @@ exports.wiretree = function (log, models, storeFiles) {
 				callback( errValidate );
 			} else {
 				storeFiles.add( modelName, files, doc, function (errStore) {
-					if ( errStore ) {
+					if (errStore) {
 						callback( errStore );
 					} else {
 						doc.save( function (err, data) {

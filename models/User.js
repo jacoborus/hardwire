@@ -79,7 +79,6 @@ exports.wiretree = function (tools, config, mongoose) {
 		Virtuals ---------------------------------------------------
 	 */
 	UserSchema.virtual( "password" ).set( function (password) {
-		console.log('virtual passs');
 		this._password = password;
 		this.salt = this.makeSalt();
 		return this.hashed_password = this.encryptPassword(password);

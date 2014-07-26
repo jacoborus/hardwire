@@ -33,12 +33,12 @@ limpia = function(query) {
 	return query;
 };
 
-exports.wiretree = function (app, log, models, filesaver, cruds) {
+exports.wiretree = function (app, log, models, filesaver, crudsControl) {
+	var cruds = crudsControl;
 	return {
 		index: function(req, res) {
 			return res.render('admin/index', {
 				title: 'Dashboard',
-				message: req.flash('error'),
 				req: req
 			});
 		},
@@ -68,12 +68,11 @@ exports.wiretree = function (app, log, models, filesaver, cruds) {
 						return res.json({
 							ok: false
 						});
-					} else {
-						return res.json({
-							ok: true,
-							id: data.id
-						});
 					}
+					res.json({
+						ok: true,
+						id: data.id
+					});
 				});
 			},
 
@@ -82,15 +81,15 @@ exports.wiretree = function (app, log, models, filesaver, cruds) {
 				cruds.read( modelName, req.params.id, function (err, data) {
 					if (err) {
 						console.log( err );
-						res.send( 500 );
-					} else if (data === null) {
-						res.send( 404 );
-					} else {
-						res.render( 'admin/docs/' + modelName + '/show', {
-							title: 'Doc : ' + data.id,
-							data: data
-						});
+						return res.send( 500 );
 					}
+					if (data === null) {
+						return res.send( 404 );
+					}
+					res.render( 'admin/docs/' + modelName + '/show', {
+						title: 'Doc : ' + data.id,
+						data: data
+					});
 				});
 			},
 
@@ -102,58 +101,93 @@ exports.wiretree = function (app, log, models, filesaver, cruds) {
 						return res.json({
 							ok: false
 						});
-					} else {
-						return res.json({
-							ok: true,
-							id: data.id
-						});
 					}
+					res.json({
+						ok: true,
+						id: data.id
+					});
 				});
 			},
 
 
-			destroy: function(req, res, next) {
-				cruds.destroy( req.params.id, req.model.modelName, function(err, data) {
+			destroy: function (req, res, next) {
+				var modelName = req.Model.modelName;
+				cruds.destroy( req.params.id, modelName, function (err, data) {
 					if (err) {
 						return next(err);
 					}
 					if (data === null) {
-						return res.json({
-							res: false
-						});
+						return res.json({ res: false });
 					}
-					return res.json({
+					res.json({
 						res: true
 					});
 				});
 			},
 
-			nuevo: function(req, res, next) {
-				var modelName;
-				modelName = req.Model.modelName;
-				return res.render('admin/docs/' + modelName + '/nuevo', {
+			new: function(req, res, next) {
+				var modelName = req.Model.modelName;
+				return res.render('admin/docs/' + modelName + '/new', {
 					title: 'Crear ' + modelName,
 					data: req.body
 				});
 			},
 
-			editar: function(req, res) {
+			edit: function(req, res) {
 				var modelName = req.Model.modelName;
 				cruds.read( modelName, req.params.id, function (err, data) {
 					if (err) {
 						console.log( err );
-						res.send( 500 );
-					} else if (data === null) {
-						res.send( 404 );
-					} else {
-						res.render('admin/docs/' + modelName + '/editar', {
-							title: 'Editar ' + modelName + " " + req.params.id,
-							data: data
-						});
+						return res.send( 500 );
 					}
+					if (data === null) {
+						return res.send( 404 );
+					}
+					res.render('admin/docs/' + modelName + '/edit', {
+						title: 'Edit ' + modelName + " " + req.params.id,
+						data: data
+					});
 				});
 			}
 		},
+		/*
+		 * KEYVAL DOCS    ---------------------------------------------------------------
+		 */
+		keyval: {
+
+			update: function (req, res, next) {
+
+				cruds.update( req.params.id, req.Model.modelName, req.body, req.files, function (err, data) {
+					if (err) {
+						console.log( err );
+						return res.json({
+							ok: false
+						});
+					}
+					res.json({
+						ok: true,
+						id: data.id
+					});
+				});
+			},
+
+			edit: function(req, res) {
+				var modelName = req.Model.modelName;
+				cruds.read( modelName, req.params.id, function (err, data) {
+					if (err) {
+						console.log( err );
+						return res.send( 500 );
+					}
+					if (data === null) {
+						return res.send( 404 );
+					}
+					res.render('admin/docs/' + modelName + '/edit', {
+						title: 'Edit ' + modelName + " " + req.params.id,
+						data: data
+					});
+				});
+			}
+		}
 	};
 };
 
