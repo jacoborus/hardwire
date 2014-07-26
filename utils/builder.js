@@ -35,18 +35,27 @@ var deleteFolderRecursive = function (path) {
 	}
 };
 
-module.exports = function (conf) {
+
+module.exports = function (config) {
 	var paths = [],
-		plugins = conf.plugins;
+		plugins = config.plugins;
 
 	var copy = function (ori, next) {
+		var viewsOrigin = path.resolve( config.rootPath, 'plugins', ori, 'views' ),
+			publicOrigin = path.resolve( config.rootPath, 'plugins', ori, 'public' );
 
-		ncp( ori, conf.rootPath + '/build/views', function (err) {
+		ncp( viewsOrigin, config.rootPath + '/build/views', function (err) {
 			if (err) {
-				return console.error(err);
+				console.error(err);
 			}
-			console.log('done!');
-			next( next );
+			console.log('done views: ' + viewsOrigin );
+			ncp( publicOrigin, config.rootPath + '/build/public', function (err2) {
+				if (err2) {
+					console.error(err2);
+				}
+				console.log('done views: ' + publicOrigin );
+				next( next );
+			});
 		});
 	};
 
@@ -54,23 +63,21 @@ module.exports = function (conf) {
 	var plugin,
 		p; //path view
 
-	deleteFolderRecursive( conf.rootPath + '/build' );
-	mkdirp( conf.rootPath + '/build' );
+	deleteFolderRecursive( config.rootPath + '/build' );
+	mkdirp( config.rootPath + '/build' );
+
 	if (plugins) {
 		for (plugin in plugins) {
-			p = path.resolve(conf.rootPath, 'plugins', plugins[plugin], 'views');
-			if (fs.lstatSync( p ).isDirectory()) {
-				paths.push( p + '/' );
-			}
+			paths.push( plugins[plugin] );
 		}
 		loop( paths, copy, function () {
 			console.log( 'plugin views copied' );
-			copy( conf.rootPath + '/app/views', function () {
+			copy( config.rootPath + '/app', function () {
 				console.log( 'app views copied' );
 			});
 		});
 	} else {
-		copy( conf.rootPath + '/app/views', function () {
+		copy( config.rootPath + '/app', function () {
 			console.log( 'app views copied' );
 		});
 	}

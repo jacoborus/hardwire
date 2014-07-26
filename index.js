@@ -10,7 +10,7 @@ var express = require('express'),
 	Wiretree = require('wiretree'),
 	mongoose = require('mongoose'),
 	loadConfig = require('./utils/loadConfig.js'),
-	builder = require( './utils/buildviews.js' ),
+	builder = require( './utils/builder.js' ),
 	fs = require( 'fs' );
 
 
