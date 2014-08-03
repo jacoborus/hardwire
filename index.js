@@ -14,6 +14,38 @@ var express = require('express'),
 	fs = require( 'fs' );
 
 
+// get module folders
+var getModuleFolders = function () {
+	var folders = [],
+		nmPath = path.resolve('./node_modules'),
+		f, len, files;
+
+	if (fs.existsSync( nmPath)) {
+		files = fs.readdirSync( nmPath );
+		len = files.length;
+		for (f in files) {
+			if (fs.statSync( nmPath + '/' + files[f] ).isDirectory()) {
+				folders.push( nmPath + '/' + files[f] );
+			}
+		}
+	}
+	return folders;
+};
+
+
+// get plugin folders
+var getPluginFolders = function (plugins) {
+	var folders = getModuleFolders( plugins ),
+		pPaths = {},
+		f;
+
+	for (f in folders) {
+		if (fs.existsSync( folders[f] + '/hw-plugin.json' )) {
+			pPaths[require(folders[f] + '/hw-plugin.json').name] = folders[f];
+		}
+	}
+	return pPaths;
+};
 
 
 
@@ -23,8 +55,8 @@ var hardwire = function (dir) {
 	var tree = new Wiretree( dir ),
 		conf;
 
-	var loadFolder = function (plugName, folder, group, suffix, cb) {
-		folder = './plugins/' + plugName + '/' + folder;
+	var loadFolder = function (plugPath, folder, group, suffix, cb) {
+		folder = plugPath + '/' + folder;
 		fs.exists( folder, function (exists) {
 			if (exists && fs.lstatSync( folder ).isDirectory()) {
 				tree.folder( folder, {
@@ -36,7 +68,7 @@ var hardwire = function (dir) {
 		});
 	};
 
-	var app = express();
+
 
 	var loadApp = function () {
 		/* - LOAD APP - */
@@ -70,10 +102,12 @@ var hardwire = function (dir) {
 
 	conf = loadConfig( dir );
 	conf.rootPath = dir;
+	var pFolders = getPluginFolders( conf.plugins );
 
 	// build views and public files
 	builder( conf );
 
+	var app = express();
 
 	tree
 	.add( conf, 'config' )
@@ -102,10 +136,10 @@ var hardwire = function (dir) {
 		/* - LOAD PLUGINS - */
 		var i, count = 0;
 		if (conf.plugins) {
-			for (i in conf.plugins) {
-				loadFolder( conf.plugins[i], 'models', 'models', 'Model', function () {
-					loadFolder( conf.plugins[i], 'controllers', 'control', 'Control', function () {
-						loadFolder( conf.plugins[i], 'routes', 'router', 'Router', function () {
+			for (i in pFolders) {
+				loadFolder( pFolders[i], 'models', 'models', 'Model', function () {
+					loadFolder( pFolders[i], 'controllers', 'control', 'Control', function () {
+						loadFolder( pFolders[i], 'routes', 'router', 'Router', function () {
 							count++;
 							if (count === conf.plugins.length) {
 								loadApp();
