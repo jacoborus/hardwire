@@ -45,12 +45,10 @@ var getCopy = function (dir) {
 			if (err) {
 				console.error(err);
 			}
-			console.log('done views: ' + viewsOrigin );
 			ncp( publicOrigin, dir + '/build/public', function (err2) {
 				if (err2) {
 					console.error(err2);
 				}
-				console.log('done views: ' + publicOrigin );
 				next( next );
 			});
 		});
@@ -72,7 +70,6 @@ module.exports = function (plugins, dir) {
 			paths.push( plugins[p] );
 		}
 		loop( paths, copy, function () {
-			console.log( 'plugin views copied' );
 			// - copy views and plublic folders from app
 			copy( dir + '/app', function () {
 				console.log( 'app views copied' );
