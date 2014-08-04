@@ -13,6 +13,15 @@ var express = require('express'),
 	builder = require( './utils/builder.js' ),
 	fs = require( 'fs' );
 
+var objLength = function (obj) {
+	var count = 0,
+		i;
+
+	for (i in obj) {
+		count++;
+	}
+	return count;
+};
 
 // get module folders
 var getModuleFolders = function () {
@@ -34,8 +43,8 @@ var getModuleFolders = function () {
 
 
 // get plugin folders
-var getPluginFolders = function (plugins) {
-	var folders = getModuleFolders( plugins ),
+var getPluginFolders = function () {
+	var folders = getModuleFolders(),
 		pPaths = {},
 		f;
 
@@ -45,6 +54,20 @@ var getPluginFolders = function (plugins) {
 		}
 	}
 	return pPaths;
+};
+
+var getPlugins = function (plugNames) {
+	var plugins = {},
+		pFolders = getPluginFolders(),
+		i, j;
+	for (i in plugNames) {
+		for (j in pFolders) {
+			if (j === plugNames[i] ) {
+				plugins[j] = pFolders[j];
+			}
+		}
+	}
+	return plugins;
 };
 
 
@@ -57,14 +80,18 @@ var hardwire = function (dir) {
 
 	var loadFolder = function (plugPath, folder, group, suffix, cb) {
 		folder = plugPath + '/' + folder;
+		console.log('cargando: ' + folder);
 		fs.exists( folder, function (exists) {
+			console.log( exists + ' : ' + folder);
 			if (exists && fs.lstatSync( folder ).isDirectory()) {
+				console.log('loaded folder: ' + folder);
 				tree.folder( folder, {
 					group : group,
 					suffix: suffix
-				});
+				}).exec( cb );
+			} else {
+				cb();
 			}
-			cb();
 		});
 	};
 
@@ -102,10 +129,12 @@ var hardwire = function (dir) {
 
 	conf = loadConfig( dir );
 	conf.rootPath = dir;
-	var pFolders = getPluginFolders( conf.plugins );
+	var hwConf = require( conf.rootPath + '/hw-conf.json');
+	var plugins = getPlugins( hwConf.plugins );
+	console.log(hwConf);
 
 	// build views and public files
-	builder( conf );
+	builder( plugins, dir );
 
 	var app = express();
 
@@ -135,13 +164,16 @@ var hardwire = function (dir) {
 	.exec( function () {
 		/* - LOAD PLUGINS - */
 		var i, count = 0;
-		if (conf.plugins) {
-			for (i in pFolders) {
-				loadFolder( pFolders[i], 'models', 'models', 'Model', function () {
-					loadFolder( pFolders[i], 'controllers', 'control', 'Control', function () {
-						loadFolder( pFolders[i], 'routes', 'router', 'Router', function () {
+		console.log(plugins)
+		if (objLength(plugins) > 0) {
+			for (i in plugins) {
+				console.log( '---------------' + plugins[i]);
+				loadFolder( plugins[i], 'models', 'models', 'Model', function () {
+					loadFolder( plugins[i], 'controllers', 'control', 'Control', function () {
+						loadFolder( plugins[i], 'routes', 'router', 'Router', function () {
 							count++;
-							if (count === conf.plugins.length) {
+							if (count === objLength( plugins )) {
+								console.log('EJECUTANDO...................................'+plugins[i]);
 								loadApp();
 							}
 						});
@@ -149,6 +181,7 @@ var hardwire = function (dir) {
 				});
 			}
 		} else {
+			console.log('<<<<<<<<<<<<<<menor');
 			loadApp();
 		}
 	});

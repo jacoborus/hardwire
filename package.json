@@ -1,6 +1,6 @@
 {
   "name": "hardwire",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "description": "CMS framework",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
   "dependencies": {
     "body-parser": "^1.0.2",
     "compression": "^1.0.2",
+    "connect-flash": "^0.1.1",
     "connect-mongo": "^0.4.1",
     "connect-timeout": "^1.1.0",
     "cookie-parser": "^1.1.0",
@@ -27,12 +28,12 @@
     "express": "^4.3.1",
     "express-session": "^1.2.0",
     "filesaver": "^0.0.10",
-    "hogan.js": "^2.0.0",
+    "hogan.js": "^3.0.2",
     "jade": "^1.3.1",
     "method-override": "^2.1.1",
     "mkdirp": "^0.5.0",
     "mongoose": "^3.8.11",
-    "mongoose-validator": "^0.2.2",
+    "mongoose-validator": "^1.0.0",
     "morgan": "^1.0.1",
     "multer": "^0.1.2",
     "ncp": "^0.6.0",
