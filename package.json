@@ -1,6 +1,6 @@
 {
   "name": "hardwire",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "description": "CMS framework",
   "main": "index.js",
   "scripts": {
@@ -15,6 +15,7 @@
     "url": "git@github.com:jacoborus/hardwire.git"
   },
   "dependencies": {
+    "async": "^0.9.0",
     "body-parser": "^1.0.2",
     "compression": "^1.0.2",
     "connect-flash": "^0.1.1",

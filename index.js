@@ -11,7 +11,8 @@ var express = require('express'),
 	mongoose = require('mongoose'),
 	loadConfig = require('./utils/loadConfig.js'),
 	builder = require( './utils/builder.js' ),
-	fs = require( 'fs' );
+	fs = require( 'fs' ),
+	async = require('async');
 
 var objLength = function (obj) {
 	var count = 0,
@@ -162,16 +163,32 @@ var hardwire = function (dir) {
 		var i, count = 0;
 		if (objLength(plugins) > 0) {
 			for (i in plugins) {
-				loadFolder( plugins[i], 'models', 'models', 'Model', function () {
-					loadFolder( plugins[i], 'controllers', 'control', 'Control', function () {
-						loadFolder( plugins[i], 'routes', 'router', 'Router', function () {
-							count++;
-							if (count === objLength( plugins )) {
-								loadApp();
-							}
-						});
-					});
-				});
+				async.parallel(
+					[
+						function (callback){
+							loadFolder( plugins[i], 'models', 'models', 'Model', function () {
+								callback(null, 'one');
+							});
+						},
+						function (callback){
+							loadFolder( plugins[i], 'controllers', 'control', 'Control', function () {
+								callback(null, 'one');
+							});
+						},
+						function (callback){
+							loadFolder( plugins[i], 'routes', 'router', 'Router', function () {
+								callback(null, 'one');
+							});
+						}
+					],
+					// optional callback
+					function (err){
+						count++;
+						if (count === objLength( plugins )) {
+							loadApp();
+						}
+					}
+				);
 			}
 		} else {
 			loadApp();
