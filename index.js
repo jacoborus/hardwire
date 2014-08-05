@@ -47,11 +47,14 @@ var getModuleFolders = function () {
 var getPluginFolders = function () {
 	var folders = getModuleFolders(),
 		pPaths = {},
-		f;
+		f, pName;
 
 	for (f in folders) {
-		if (fs.existsSync( folders[f] + '/hw-plugin.json' )) {
-			pPaths[require(folders[f] + '/hw-plugin.json').name] = folders[f];
+		if (fs.existsSync( folders[f] + '/package.json' )){
+			pName = require( folders[f] + '/package.json' )._hwPlugin;
+			if (pName) {
+				pPaths[pName] = folders[f];
+			}
 		}
 	}
 	return pPaths;

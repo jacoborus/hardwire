@@ -1,6 +1,6 @@
 {
   "name": "hardwire",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "CMS framework",
   "main": "index.js",
   "scripts": {
@@ -48,6 +48,6 @@
   "devDependencies": {
     "mocha": "^1.19.0"
   },
-  "author": "Jacobo Tabernero - jacoborus - jacobo@xarope.eu",
+  "author": "Jacobo Tabernero - github.com/jacoborus <jacobo@xarope.eu>",
   "license": "MIT"
 }
