@@ -20,8 +20,19 @@ Installation
 ------------
 
 ```
-npm install git@github.com:jacoborus/hardwire.git
+npm install --save hardwire
 ```
+
+Generate boilerplate with [Hardwire-cli](http://github.com/jacoborus/hardwire-cli) (recommended):
+
+```sh
+# install CLI globally
+sudo npm install -g hardwire-cli
+# follow instructions
+hardwire -h
+```
+
+
 
 Usage
 -----
@@ -40,8 +51,6 @@ Folder structure app
 - routes
 - views
 - public
-- setup
-- plugins
 
 
 Routing
@@ -70,14 +79,6 @@ DEL		/admin/docs/:model/:id			Destroy doc
 GET		/admin/keyval/:model/:id/edit	Edit doc view
 PUT		/admin/keyval/:model/:id		Update doc
 ```
-
-Client dependencies
--------------------
-
-**[bower](http://bower.io/)** (app/bower.json)
-
-- [submitter](https://github.com/jacoborus/submitter)
-- [nanobar](https://github.com/jacoborus/nanobar)
 
 
 <br><br>
