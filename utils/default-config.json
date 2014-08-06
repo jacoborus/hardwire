@@ -1,3 +1,4 @@
 {
-	"loadBasicPassport": true
+	"loadBasicPassport": true,
+	"plugins": []
 }
