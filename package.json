@@ -1,6 +1,6 @@
 {
   "name": "hardwire",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "description": "CMS framework",
   "main": "index.js",
   "scripts": {
@@ -25,6 +25,7 @@
     "cookies": "^0.4.1",
     "debug": "^1.0.3",
     "deep-extend": "^0.2.8",
+    "dotmail": "0.0.6",
     "errorhandler": "^1.0.1",
     "express": "^4.3.1",
     "express-session": "^1.2.0",
