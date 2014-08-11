@@ -11,7 +11,7 @@ var cleanQuery = function (query) {
 	return query;
 };
 
-exports.wiretree = function (log, models, storeFiles) {
+exports.wiretree = function (log, models, fm) {
 
 	var mod = {};
 
@@ -23,7 +23,7 @@ exports.wiretree = function (log, models, storeFiles) {
 			if (errValidate) {
 				callback( errValidate );
 			} else {
-				storeFiles.add( modelName, files, doc, function (errStore) {
+				fm.add( modelName, files, doc, function (errStore) {
 					if (errStore) {
 						callback( errStore );
 					} else {
@@ -57,7 +57,7 @@ exports.wiretree = function (log, models, storeFiles) {
 				if (errValidate) {
 					callback( errValidate );
 				} else {
-					storeFiles.add( modelName, files, doc, function (errStore) {
+					fm.add( modelName, files, doc, function (errStore) {
 						if ( errStore ) {
 							callback( errStore );
 						} else {

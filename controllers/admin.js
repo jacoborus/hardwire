@@ -33,7 +33,7 @@ limpia = function(query) {
 	return query;
 };
 
-exports.wiretree = function (app, log, models, filesaver, crudsControl) {
+exports.wiretree = function (app, log, models, crudsControl) {
 	var cruds = crudsControl;
 	return {
 		index: function(req, res) {
