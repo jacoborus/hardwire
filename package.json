@@ -1,6 +1,6 @@
 {
   "name": "hardwire",
-  "version": "0.0.37",
+  "version": "0.0.38",
   "description": "CMS framework",
   "main": "index.js",
   "scripts": {
@@ -43,7 +43,7 @@
     "sendmail": "^0.2.1",
     "static-favicon": "^1.0.2",
     "winston": "^0.7.3",
-    "wiretree": "^0.4.0"
+    "wiretree": "^0.4.1"
   },
   "devDependencies": {
     "mocha": "^1.19.0"

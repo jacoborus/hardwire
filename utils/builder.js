@@ -41,14 +41,8 @@ var getCopy = function (dir) {
 		var viewsOrigin = path.resolve( dir, 'plugins', ori, 'views' ),
 			publicOrigin = path.resolve( dir, 'plugins', ori, 'public' );
 
-		ncp( viewsOrigin, dir + '/build/views', function (err) {
-			if (err) {
-				console.error(err);
-			}
-			ncp( publicOrigin, dir + '/build/public', function (err2) {
-				if (err2) {
-					console.error(err2);
-				}
+		ncp( viewsOrigin, dir + '/build/views', function () {
+			ncp( publicOrigin, dir + '/build/public', function () {
 				next( next );
 			});
 		});
