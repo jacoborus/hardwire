@@ -36,7 +36,7 @@ limpia = function(query) {
 exports.wiretree = function (app, log, models, crudsControl) {
 	var cruds = crudsControl;
 	return {
-		index: function(req, res) {
+		index: function (req, res) {
 			return res.render('admin/index', {
 				title: 'Dashboard',
 				req: req
@@ -47,7 +47,7 @@ exports.wiretree = function (app, log, models, crudsControl) {
 		 * APP DOCS    ---------------------------------------------------------------
 		 */
 		docs: {
-			search: function(req, res, next) {
+			search: function (req, res, next) {
 				var query;
 				query = limpia(req.query);
 				req.Model.find( query, function (err, data) {
@@ -125,7 +125,7 @@ exports.wiretree = function (app, log, models, crudsControl) {
 				});
 			},
 
-			new: function(req, res, next) {
+			new: function (req, res, next) {
 				var modelName = req.Model.modelName;
 				return res.render('admin/docs/' + modelName + '/new', {
 					title: 'Crear ' + modelName,
@@ -133,7 +133,7 @@ exports.wiretree = function (app, log, models, crudsControl) {
 				});
 			},
 
-			edit: function(req, res) {
+			edit: function (req, res) {
 				var modelName = req.Model.modelName;
 				cruds.read( modelName, req.params.id, function (err, data) {
 					if (err) {
@@ -171,7 +171,7 @@ exports.wiretree = function (app, log, models, crudsControl) {
 				});
 			},
 
-			edit: function(req, res) {
+			edit: function (req, res) {
 				var modelName = req.Model.modelName;
 				cruds.read( modelName, req.params.id, function (err, data) {
 					if (err) {

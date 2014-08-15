@@ -50,8 +50,8 @@ var getPluginFolders = function () {
 		f, pName;
 
 	for (f in folders) {
-		if (fs.existsSync( folders[f] + '/package.json' )){
-			pName = require( folders[f] + '/package.json' )._hwPlugin;
+		if (fs.existsSync( folders[f] + '/hw-plugin.json' )){
+			pName = require( folders[f] + '/hw-plugin.json' ).name;
 			if (pName) {
 				pPaths[pName] = folders[f];
 			}
@@ -174,7 +174,8 @@ var hardwire = function (dir) {
 
 	.exec( function () {
 		/* - LOAD PLUGINS - */
-		var i, count = 0;
+		var count = 0, i;
+
 		if (objLength(plugins) > 0) {
 			for (i in plugins) {
 				async.parallel(
