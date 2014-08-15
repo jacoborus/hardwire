@@ -1,3 +1,5 @@
+'use strict';
+
 var fs = require('fs'),
 	deepExtend = require('deep-extend'),
 	path = require('path'),
@@ -5,21 +7,19 @@ var fs = require('fs'),
 
 module.exports = function (dir) {
 	var env = process.env.NODE_ENV || 'default',
-		envConfig, configDir;
+		configDir = path.resolve( dir, 'config'),
+		hwConfPath = path.resolve( dir, 'hw-conf.json'),
+		config = require( hwConfPath ),
+		envConfig;
 
-	configDir = path.resolve( dir, 'config/');
-	var config = require( path.resolve( configDir,  'default.json' ));
 	config = deepExtend( defConf, config );
-	config.folder = dir;
+	config.folder = path.resolve( dir );
 
 	if (env !== 'default') {
 		if (fs.existsSync( path.resolve( configDir , env + '.json' ))) {
 			envConfig = require( path.resolve( configDir , env + '.json' ));
-			return deepExtend(config, envConfig);
-		} else {
-			return config;
+			config = deepExtend( config, envConfig );
 		}
-	} else {
-		return config;
 	}
+	return config;
 };

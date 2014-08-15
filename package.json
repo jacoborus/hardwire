@@ -1,6 +1,6 @@
 {
   "name": "hardwire",
-  "version": "0.0.41",
+  "version": "0.0.42",
   "description": "CMS framework",
   "main": "index.js",
   "scripts": {
@@ -22,10 +22,10 @@
     "connect-mongo": "^0.4.1",
     "connect-timeout": "^1.1.0",
     "cookie-parser": "^1.1.0",
-    "cookies": "^0.4.1",
+    "cookies": "^0.5.0",
     "debug": "^1.0.3",
     "deep-extend": "^0.2.8",
-    "dotmail": "0.0.6",
+    "dotmail": "0.0.8",
     "errorhandler": "^1.0.1",
     "express": "^4.3.1",
     "express-session": "^1.2.0",
