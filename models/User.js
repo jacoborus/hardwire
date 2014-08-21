@@ -35,9 +35,6 @@ exports.wiretree = function (tools, config, mongoose) {
 			required: true,
 			"default": ""
 		},
-		password2: {
-			type: String
-		},
 		confirmHash: {
 			type: String,
 			unique: true
@@ -45,7 +42,7 @@ exports.wiretree = function (tools, config, mongoose) {
 		rol: {
 			type: String,
 			required: true,
-			"default": "Registrado"
+			"default": "registered"
 		},
 		salt: {
 			type: String,
@@ -66,11 +63,7 @@ exports.wiretree = function (tools, config, mongoose) {
 			required: true,
 			"default": Date.now
 		},
-		credits: {
-			type: Number,
-			"default": 0
-		},
-		activo: {
+		active: {
 			type: Boolean
 		}
 	});
@@ -122,18 +115,7 @@ exports.wiretree = function (tools, config, mongoose) {
 	/*
 		Pre-save hooks --------------------------------------------------------------------------
 	 */
-	UserSchema.pre("validate", function(next) {
-		if (this.password2 && this.password2 !== '') {
-			if (this.password3 !== this.password) {
-				return next(new Error("Las contraseñas no coinciden:" + this.password + "!==" + this.password2));
-			} else {
-				this.password = this.password2;
-				return next();
-			}
-		} else {
-			return next();
-		}
-	});
+
 	UserSchema.pre("save", function(next) {
 		if (!this.isNew) {
 			return next();

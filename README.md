@@ -12,7 +12,7 @@ Built on top of:
 - dotmail - SMTP mailer and mail template engine
 - Jade - Template engine
 - ¿?¿? - Handle errors and logs
-- ¿?¿? - Roles, levels and permissions
+- miniruler - Roles, levels and permissions
 - node-filesaver + ¿?¿? - Files manager with collections
 
 
