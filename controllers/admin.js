@@ -33,8 +33,9 @@ limpia = function(query) {
 	return query;
 };
 
-exports.wiretree = function (app, log, models, crudsControl) {
+exports.wiretree = function (app, log, models, crudsControl, populateControl) {
 	var cruds = crudsControl;
+	var popu = populateControl;
 	return {
 		index: function (req, res) {
 			return res.render('admin/index', {
@@ -47,15 +48,22 @@ exports.wiretree = function (app, log, models, crudsControl) {
 		 * APP DOCS    ---------------------------------------------------------------
 		 */
 		docs: {
+
 			search: function (req, res, next) {
-				var query;
-				query = limpia(req.query);
-				req.Model.find( query, function (err, data) {
+				var modelName = req.Model.modelName,
+					query = req.query,
+					po = popu( modelName, 'search' );
+
+				cruds.search( modelName, query, {population: po}, function (err, data) {
 					if (err) {
-						return next(err);
+						console.log( err );
+						return res.send( 500 );
 					}
-					res.render('admin/docs/' + req.Model.modelName + '/list', {
-						title: 'Listado de ' + req.Model.modelName + 's',
+					if (data === null) {
+						data = [];
+					}
+					res.render( 'admin/docs/' + modelName + '/list', {
+						title: modelName + 's',
 						data: data
 					});
 				});
@@ -78,7 +86,8 @@ exports.wiretree = function (app, log, models, crudsControl) {
 
 			read: function (req, res) {
 				var modelName = req.Model.modelName;
-				cruds.read( modelName, req.params.id, function (err, data) {
+				var po = popu( modelName, 'read' );
+				cruds.read( modelName, req.params.id, {population: po}, function (err, data) {
 					if (err) {
 						console.log( err );
 						return res.send( 500 );
@@ -135,7 +144,8 @@ exports.wiretree = function (app, log, models, crudsControl) {
 
 			edit: function (req, res) {
 				var modelName = req.Model.modelName;
-				cruds.read( modelName, req.params.id, function (err, data) {
+				var po = popu( modelName, 'edit' );
+				cruds.read( modelName, req.params.id, {population: po}, function (err, data) {
 					if (err) {
 						console.log( err );
 						return res.send( 500 );
@@ -144,7 +154,19 @@ exports.wiretree = function (app, log, models, crudsControl) {
 						return res.send( 404 );
 					}
 					res.render('admin/docs/' + modelName + '/edit', {
-						title: 'Edit ' + modelName + " " + req.params.id,
+						title: 'Edit ' + modelName + ' ' + req.params.id,
+						data: data
+					});
+				});
+			},
+
+			taxonomy: function (req, res, next) {
+				cruds.search( req.modelName, {}, {select:'_taxInfo'}, function (err, data) {
+					if (err) {
+						return next(err);
+					}
+					res.json({
+						ok: true,
 						data: data
 					});
 				});
@@ -155,7 +177,7 @@ exports.wiretree = function (app, log, models, crudsControl) {
 		 */
 		keyval: {
 
-			update: function (req, res, next) {
+			update: function (req, res) {
 
 				cruds.update( req.params.id, req.Model.modelName, req.body, req.files, function (err, data) {
 					if (err) {
@@ -182,7 +204,7 @@ exports.wiretree = function (app, log, models, crudsControl) {
 						return res.send( 404 );
 					}
 					res.render('admin/docs/' + modelName + '/edit', {
-						title: 'Edit ' + modelName + " " + req.params.id,
+						title: 'Edit ' + modelName + ' ' + req.params.id,
 						data: data
 					});
 				});

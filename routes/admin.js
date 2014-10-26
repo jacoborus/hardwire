@@ -25,6 +25,8 @@ module.exports.wiretree = function (app, express, models, control) {
 	/*	 * keyval docs *	 */
 	app.route( '/admin/keyval/:model/:id/edit' ).get( reqAdmin, control.admin.keyval.edit );
 	app.route( '/admin/keyval/:model/:id' ).put( reqAdmin, control.admin.keyval.update );
+	/* taxonomy */
+	app.route( '/admin/taxonomy/:model' ).get( reqAdmin, control.admin.docs.taxonomy );
 
 	/*
 	 * APP PARAMS    ---------------------------------------------

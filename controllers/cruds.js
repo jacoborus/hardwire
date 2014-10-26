@@ -21,29 +21,40 @@ exports.wiretree = function (log, models, fm) {
 
 		doc.validate( function (errValidate) {
 			if (errValidate) {
-				callback( errValidate );
-			} else {
-				fm.add( modelName, files, doc, function (errStore) {
-					if (errStore) {
-						callback( errStore );
-					} else {
-						doc.save( function (err, data) {
-							if (err) {
-								callback( err );
-							} else {
-								callback( null, data );
-							}
-						});
-					}
-				});
+				return callback( errValidate );
 			}
+			fm.add( modelName, files, doc, function (errStore) {
+				if (errStore) {
+					return callback( errStore );
+				}
+				doc.save( function (err, data) {
+					if (err) {
+						return callback( err );
+					}
+					callback( null, data );
+				});
+			});
 		});
 	};
 
-	mod.read = function (modelName, id, callback) {
-		models[modelName].findById( id, function (err, data) {
-			if (err) { callback( err );}
-			callback( null, data );
+	mod.read = function (modelName, id, population, callback) {
+		var cb, populate, doc, p;
+		if (typeof population === 'function') {
+			cb = population;
+			populate = [];
+		} else if (typeof population === 'object') {
+			cb = callback;
+			populate = population;
+		} else {
+			throw new Error('cruds.read:: bad options argument');
+		}
+		doc = models[modelName].findById(id);
+		for (p in populate) {
+			doc = doc.populate( populate[p] );
+		}
+		doc.exec( function (err, data) {
+			if (err) { return cb( err );}
+			cb( null, data );
 		});
 	};
 
@@ -55,22 +66,19 @@ exports.wiretree = function (log, models, fm) {
 			}
 			doc.validate( function (errValidate) {
 				if (errValidate) {
-					callback( errValidate );
-				} else {
-					fm.add( modelName, files, doc, function (errStore) {
-						if ( errStore ) {
-							callback( errStore );
-						} else {
-							doc.save( function (err, data) {
-								if (err) {
-									callback( err );
-								} else {
-									callback( null, data );
-								}
-							});
-						}
-					});
+					return callback( errValidate );
 				}
+				fm.add( modelName, files, doc, function (errStore) {
+					if ( errStore ) {
+						return callback( errStore );
+					}
+					doc.save( function (err, data) {
+						if (err) {
+							return callback( err );
+						}
+						callback( null, data );
+					});
+				});
 			});
 		});
 	};
@@ -79,17 +87,31 @@ exports.wiretree = function (log, models, fm) {
 		models[modelName].findByIdAndRemove( id, callback);
 	};
 
-	mod.search = function (req, res, next) {
-		var query;
-		query = cleanQuery(req.query);
-		return req.Model.find(query, function(err, data) {
-			if (err) {
-				return next(err);
-			}
-			return res.render('admin/docs/' + req.Model.modelName + '/list', {
-				title: 'Listado de ' + req.Model.modelName + 's',
-				data: data
-			});
+	mod.search = function (modelName, query, options, callback) {
+		var cb, populate, select, docs, p;
+
+		if (typeof options === 'function') {
+			cb = options;
+			populate = [];
+			select = null;
+		} else if (typeof options === 'object') {
+			cb = callback;
+			populate = options.population || [];
+			select = options.select || null;
+		} else {
+			throw new Error('cruds.read:: bad options argument');
+		}
+
+		query = cleanQuery( query );
+		docs = models[modelName].find( query, select );
+
+		for (p in populate) {
+			docs = docs.populate( populate[p] );
+		}
+
+		docs.exec( function (err, data) {
+			if (err) { return callback( err );}
+			callback( null, data );
 		});
 	};
 
