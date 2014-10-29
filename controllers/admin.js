@@ -161,7 +161,7 @@ exports.wiretree = function (app, log, models, crudsControl, populateControl) {
 			},
 
 			taxonomy: function (req, res, next) {
-				cruds.search( req.modelName, {}, {select:'_taxInfo'}, function (err, data) {
+				cruds.search( req.modelName, {}, {}, function (err, data) {
 					if (err) {
 						return next(err);
 					}

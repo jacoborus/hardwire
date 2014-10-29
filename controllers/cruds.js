@@ -1,5 +1,6 @@
 'use strict';
 
+var fs= require('fs');
 var cleanQuery = function (query) {
 	var prop, val;
 	for (prop in query) {
@@ -11,9 +12,10 @@ var cleanQuery = function (query) {
 	return query;
 };
 
-exports.wiretree = function (log, models, fm) {
+exports.wiretree = function (log, models, fm, relateControl) {
 
-	var mod = {};
+	var mod = {},
+		relate = relateControl;
 
 	mod.create = function (modelName, body,	files, callback) {
 
@@ -39,6 +41,7 @@ exports.wiretree = function (log, models, fm) {
 
 	mod.read = function (modelName, id, population, callback) {
 		var cb, populate, doc, p;
+
 		if (typeof population === 'function') {
 			cb = population;
 			populate = [];
@@ -48,13 +51,20 @@ exports.wiretree = function (log, models, fm) {
 		} else {
 			throw new Error('cruds.read:: bad options argument');
 		}
+
 		doc = models[modelName].findById(id);
+
 		for (p in populate) {
 			doc = doc.populate( populate[p] );
 		}
+
 		doc.exec( function (err, data) {
 			if (err) { return cb( err );}
-			cb( null, data );
+
+			relate( data, modelName, 'read', function (err2, doc) {
+				if (err) { return cb( err2 );}
+				cb( null, doc[0] );
+			});
 		});
 	};
 

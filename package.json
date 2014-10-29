@@ -1,6 +1,6 @@
 {
   "name": "hardwire",
-  "version": "0.0.45",
+  "version": "0.0.46",
   "description": "CMS framework",
   "main": "index.js",
   "scripts": {
