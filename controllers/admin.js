@@ -79,7 +79,8 @@ exports.wiretree = function (app, log, models, crudsControl, populateControl) {
 					}
 					res.json({
 						ok: true,
-						id: data.id
+						id: data.id,
+						model: req.Model.modelName
 					});
 				});
 			},
@@ -113,7 +114,8 @@ exports.wiretree = function (app, log, models, crudsControl, populateControl) {
 					}
 					res.json({
 						ok: true,
-						id: data.id
+						id: data.id,
+						model: req.Model.modelName
 					});
 				});
 			},
