@@ -1,0 +1,17 @@
+head
+	meta(charset="utf-8")
+	meta(name="viewport", content="width=device-width, initial-scale=1")
+
+	title= pkg.appname + ' - ' + title
+	meta(http-equiv="Content-type", content="text/html;charset=UTF-8")
+	meta(name="keywords", content=pkg.keywords.join(","))
+	meta(name="description", content="Hardwire control panel")
+
+	link(href="/favicon.ico", rel="shortcut icon", type="image/x-icon")
+
+	// Application styles
+	link(rel='stylesheet', href='/css/hw-baseadmin.css')
+
+	//-Le HTML5 shim, for IE6-8 support of HTML5 elements
+	//if lt IE 9
+		script(src="http://html5shim.googlecode.com/svn/trunk/html5.js")
