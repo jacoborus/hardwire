@@ -1,9 +1,13 @@
 'use strict';
 
+/* TODO: refactor this mess*/
+
+
 var ncp = require('ncp').ncp,
 	fs = require('fs'),
 	path = require('path'),
-	mkdirp = require('mkdirp');
+	mkdirp = require('mkdirp'),
+	hwFolder = path.resolve( path.dirname( __filename ), '..');
 
 ncp.limit = 1;
 
@@ -53,26 +57,33 @@ var getCopy = function (dir) {
 module.exports = function (plugins, dir) {
 	var paths = [],
 		copy = getCopy( dir ),
+		viewsOrigin = path.resolve( hwFolder, 'views' ),
+		publicOrigin = path.resolve( hwFolder, 'public' ),
 		p;
 
 	// - copy views and plublic folders from plugins
 	deleteFolderRecursive( dir + '/build' );
 	mkdirp( dir + '/build' );
 
-	if (plugins) {
-		for (p in plugins) {
-			paths.push( plugins[p] );
-		}
-		loop( paths, copy, function () {
-			// - copy views and plublic folders from app
-			copy( dir + '/app', function () {
-				console.log( 'app views copied' );
-			});
+	ncp( viewsOrigin, dir + '/build/views', function () {
+		ncp( publicOrigin, dir + '/build/public', function () {
+			if (plugins.length) {
+				for (p in plugins) {
+					paths.push( plugins[p] );
+				}
+				loop( paths, copy, function () {
+					// - copy views and plublic folders from app
+					copy( dir + '/app', function () {
+						console.log( 'app views copied' );
+					});
+				});
+			} else {
+				// - copy views and plublic folders from app
+				copy( dir + '/app', function () {
+					console.log( 'app views copied' );
+				});
+			}
 		});
-	} else {
-		// - copy views and plublic folders from app
-		copy( dir + '/app', function () {
-			console.log( 'app views copied' );
-		});
-	}
+	});
+
 };
