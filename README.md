@@ -9,7 +9,7 @@ Built on top of:
 - Mongoose + node-validator - DB, ORM and validation
 - Wiretree - Framework dependency injection and app structure
 - Passport - Multiservice auth
-- dotmail - SMTP mailer and mail template engine
+- curlymail - SMTP mailer and mail template engine
 - Jade - Template engine
 - ¿?¿? - Handle errors and logs
 - miniruler - Roles, levels and permissions
