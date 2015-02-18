@@ -21,6 +21,10 @@ exports.wiretree = function (tools, config, mongoose) {
 			"default": "",
 			unique: true
 		},
+		username: {
+			type: String,
+			unique: true
+		},
 		since: {
 			type: Date,
 			required: true,
@@ -86,12 +90,14 @@ exports.wiretree = function (tools, config, mongoose) {
 	validatePresenceOf = function(value) {
 		return value && value.length;
 	};
+
 	UserSchema.path("email").validate((function (email) {
 		if (authTypes.indexOf(this.provider) !== -1) {
 			return true;
 		}
 		return email.length;
 	}), "Email cannot be blank");
+
 	UserSchema.path("email").validate((function(email, fn) {
 		var User;
 		User = mongoose.model("User");
@@ -105,6 +111,7 @@ exports.wiretree = function (tools, config, mongoose) {
 			return fn(true);
 		}
 	}), "Email already exists");
+
 	UserSchema.path("hashed_password").validate((function(hashed_password) {
 		if (authTypes.indexOf(this.provider) !== -1) {
 			return true;

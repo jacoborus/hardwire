@@ -15,6 +15,7 @@ exports.wiretree = function (app, config, log, UserModel) {
 				if (err) {
 					next(err);
 				} else {
+					console.log(data);
 					req.session.profile = data[0];
 				}
 			});

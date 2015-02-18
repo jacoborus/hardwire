@@ -1,11 +1,13 @@
 {
   "name": "hardwire",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "CMS framework",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "mkdir ./public/js && mkdir ./public/css && cat ./node_modules/nanobar/nanobar.js ./node_modules/submitter/submitter.js ./src/js/baseadmin.js > ./public/js/hw-baseadmin.js && cat ./src/css/pure-css.min.css ./src/css/side-menu.css ./src/css/admin.css >  ./public/css/hw-baseadmin.css"
+    "postinstall": "npm run build-js && npm run build-css",
+    "build-js": "mkdir ./public/js && cat ./node_modules/nanobar/nanobar.js ./node_modules/submitter/submitter.js ./src/js/baseadmin.js ./src/js/sidetool.js ./src/js/posttaxonomy.js > ./public/js/hw-baseadmin.js",
+    "build-css": "mkdir ./public/css && cat ./src/css/pure-css.min.css ./src/css/side-menu.css ./src/css/admin.css >  ./public/css/hw-baseadmin.css"
   },
   "keywords": [
     "CMS"
