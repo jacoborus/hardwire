@@ -12,7 +12,7 @@ exports.wiretree = function () {
 	};
 
 	mod.login =  function (req, res, next) {
-		res.render('login', {
+		res.render('user/login', {
 			title: 'Login'
 		});
 	};

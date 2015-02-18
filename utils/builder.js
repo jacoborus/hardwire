@@ -7,7 +7,7 @@ var ncp = require('ncp').ncp,
 	fs = require('fs'),
 	path = require('path'),
 	mkdirp = require('mkdirp'),
-	hwFolder = path.resolve( path.dirname( __filename ), '..');
+	hwFolder = path.resolve( __dirname, '..');
 
 ncp.limit = 1;
 
