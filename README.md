@@ -38,25 +38,14 @@ npm run hw-boilerplate
 npm run hw-initdb
 ```
 
-Generate boilerplate with [Hardwire-cli](http://github.com/jacoborus/hardwire-cli) (recommended):
 
-```sh
-# install CLI globally
-sudo npm install -g hardwire-cli
-# follow instructions
-hardwire -h
-```
-
-
-
-Usage
------
-
-Create your controllers, models, routes and views in their respective folders and call Hardwire:
+Run
+---
 
 ```
-require('hardwire')( __dirname );
+npm start
 ```
+
 
 Folder structure app
 --------------------
@@ -75,8 +64,8 @@ Routing
 ### General
 ```
 GET		/					Home page
-GET		/login				Login page
-GET		/logout				Login page
+GET		/user/login			Login page
+GET		/user/logout		Login page
 ```
 
 ### Administración
