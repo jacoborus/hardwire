@@ -1,6 +1,6 @@
 {
   "name": "hardwire",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "CMS framework",
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,7 @@
     "connect-timeout": "^1.1.0",
     "cookie-parser": "^1.1.0",
     "cookies": "^0.5.0",
+    "cp": "^0.2.0",
     "curlymail": "^0.1.2",
     "debug": "^2.1.1",
     "deep-extend": "^0.3.2",
