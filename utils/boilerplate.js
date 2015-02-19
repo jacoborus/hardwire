@@ -5,7 +5,7 @@ var path = require( 'path' ),
 	dir = path.resolve( '.' );
 
 
-ncp( path.resolve( __dirname, './boilerplate' ), dir, function (err) {
+ncp( path.resolve( __dirname, './boilerplate' ), dir, {clobber: false},function (err) {
 	if (err) {
 		console.error( err );
 		process.exit( 1 );
