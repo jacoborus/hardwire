@@ -1,0 +1,41 @@
+{
+    "character_encoding":"utf-8",
+    "cookie_secret":"mysecret",
+    "emailAccounts": {
+        "main": {
+            "user": "username@domain.com",
+            "password": "P455W0RD",
+            "host": "smtp.gmail.com",
+            "ssl": true
+        }
+    },
+    "globalUrl" : "localhost:3000",
+    "logPath": "datapack/log",
+    "mongodb":{
+        "uri":"mongodb://localhost:27017/hw-web"
+    },
+    "passports" : {
+        "local" : true
+    },
+    "plugins": [],
+    "port":3000,
+    "publicFolders" : {
+        "/components" : "/bower_components"
+    },
+    "request_timeout":1000,
+    "session":{
+        "key":"mykey",
+        "secret": "mysecret"
+    },
+    "seo" : {
+        "appname" : "My App Name",
+        "keywords" : [
+            "key one",
+            "key two",
+            "key three"
+        ],
+        "description" : ""
+    },
+    "tempFolder" : "temp",
+    "uploadFolders" : {}
+}
