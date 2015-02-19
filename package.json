@@ -1,6 +1,6 @@
 {
   "name": "hardwire",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "CMS framework",
   "main": "index.js",
   "scripts": {
@@ -43,17 +43,14 @@
     "mongoose-validator": "^1.0.0",
     "morgan": "^1.2.3",
     "multer": "^0.1.4",
+    "nanobar": "^0.2.0",
     "ncp": "^1.0.1",
     "passport": "^0.2.0",
     "passport-local": "^1.0.0",
     "static-favicon": "^1.0.2",
-    "winston": "^0.9.0",
-    "wiretree": "^0.5.0",
     "submitter": "^0.0.6",
-    "nanobar": "^0.2.0"
-  },
-  "devDependencies": {
-    "mocha": "^2.1.0"
+    "winston": "^0.9.0",
+    "wiretree": "^0.5.0"
   },
   "author": "Jacobo Tabernero - github.com/jacoborus <jacobo@xarope.eu>",
   "license": "MIT"

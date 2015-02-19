@@ -12,7 +12,8 @@ var express = require('express'),
 	loadConfig = require('./utils/loadConfig.js'),
 	builder = require( './utils/builder.js' ),
 	fs = require( 'fs' ),
-	async = require('async');
+	async = require('async'),
+	http, https;
 
 var objLength = function (obj) {
 	var count = 0,
@@ -129,10 +130,17 @@ var hardwire = function (dir) {
 			tree.get( 'passp' );
 			tree.get( 'middleware' );
 			tree.get( 'router' );
+			if (!conf.ssl) {
+				http = require('http');
+				http.createServer( app ).listen( conf.port );
+			} else {
+				https = require('https');
+				https.createServer( conf.sslCert, app ).listen( conf.port );
+			}
 			console.log( 'listening port ' + conf.port );
-			app.listen( conf.port );
 		});
 	};
+
 
 	conf = loadConfig( dir );
 	conf.rootPath = dir;
@@ -202,7 +210,8 @@ var hardwire = function (dir) {
 						}
 					],
 					// optional callback
-					function (err){
+					function (err) {
+						if (err) {throw err;}
 						count++;
 						if (count === objLength( plugins )) {
 							loadApp();
