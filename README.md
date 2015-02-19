@@ -16,11 +16,26 @@ Built on top of:
 - node-filesaver + ¿?¿? - Files manager with collections
 
 
+
+Requirements
+------------
+
+Node.js and a MongoDB instance
+
 Installation
 ------------
 
-```
+```sh
+mkdir myapp && cd myapp
+npm init  # hardwire requires a package.json
 npm install --save hardwire
+
+# generate boilerplate
+npm run hw-boilerplate
+
+# open hw-conf.json and add your MongoDB settings
+# and then initialize database
+npm run hw-initdb
 ```
 
 Generate boilerplate with [Hardwire-cli](http://github.com/jacoborus/hardwire-cli) (recommended):
