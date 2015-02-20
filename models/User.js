@@ -73,26 +73,25 @@ exports.wiretree = function (tools, config, mongoose) {
 	.set( function (password) {
 		this.salt = this.makeSalt();
 		this.recoverHash = undefined;
-		this.hashedPassword = this.encryptPassword( password );
-		return this.hashedPassword;
+		return this.hashedPassword = this.encryptPassword( password );
 	});
 
 
 	/*
 		Validations -----------------------------------------------------------------
 	 */
-	validatePresenceOf = function(value) {
+	validatePresenceOf = function (value) {
 		return value && value.length;
 	};
 
-	UserSchema.path('email').validate(function (email) {
+	UserSchema.path('email').validate( function (email) {
 		if (authTypes.indexOf(this.provider) !== -1) {
 			return true;
 		}
 		return email.length;
 	}, 'Email cannot be blank');
 
-	UserSchema.path('email').validate(function(email, fn) {
+	UserSchema.path('email').validate( function (email, fn) {
 		var User;
 		User = mongoose.model('User');
 		if (this.isNew || this.isModified('email')) {
@@ -117,13 +116,13 @@ exports.wiretree = function (tools, config, mongoose) {
 		Pre-save hooks --------------------------------------------------------------------------
 	 */
 
-	UserSchema.pre('save', function(next) {
+	UserSchema.pre( 'save', function (next) {
 		if (!this.isNew) {
 			return next();
 		}
 		this.provider = 'local';
 		if (!validatePresenceOf(this.password) && authTypes.indexOf(this.provider) === -1) {
-			return next(new Error('Invalid password'));
+			return next( new Error( 'Invalid password' ));
 		} else {
 			return next();
 		}
@@ -140,7 +139,7 @@ exports.wiretree = function (tools, config, mongoose) {
 				@return {Boolean}
 				@api public
 		 */
-		authenticate: function(plainText) {
+		authenticate: function (plainText) {
 			return this.encryptPassword(plainText) === this.hashedPassword;
 		},
 
@@ -149,7 +148,7 @@ exports.wiretree = function (tools, config, mongoose) {
 				@return {String}
 				@api public
 		 */
-		makeSalt: function() {
+		makeSalt: function () {
 			return Math.round(new Date().valueOf() * Math.random()) + '';
 		},
 
@@ -159,14 +158,14 @@ exports.wiretree = function (tools, config, mongoose) {
 				@return {String}
 				@api public
 		 */
-		encryptPassword: function(password) {
+		encryptPassword: function (password) {
 			var encrypred, err;
 			if (!password) {
 				return '';
 			}
 			encrypred = void 0;
 			try {
-				encrypred = crypto.createHmac('sha1', this.salt).update(password).digest('hex');
+				encrypred = crypto.createHmac( 'sha1', this.salt ).update( password ).digest('hex');
 				return encrypred;
 			} catch (_error) {
 				err = _error;

@@ -24,8 +24,8 @@ exports.wiretree = function (tools, config, mongoose) {
 		},
 		host: String,
 		port: Number,
-		ssl: {},
-		tls: {},
+		ssl: Boolean,
+		tls: Boolean,
 		timeout: Number,
 		domain: String
 	});

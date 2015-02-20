@@ -11,15 +11,13 @@ block content
 					tr
 						th Account
 						th Emailname
-						th Email
 						th Edit
 
 				tbody
 					each email in data
 						tr
 							td: a(href='/admin/docs/Email/'+ email._id)!= email.account
-							td= email.username
-							td= email.email
+							td= email.user
 							td: a(href="/admin/docs/Email/" + email._id + "/edit") Edit
 
 		p #{data.length} emails
