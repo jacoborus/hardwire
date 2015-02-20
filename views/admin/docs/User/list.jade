@@ -3,7 +3,7 @@ extends ../../layout/layout
 block content
 	section#list-User
 		h1 Users
-		a.pure-button(href="/admin/docs/User/new"): b + Nuevo user
+		a.pure-button(href="/admin/docs/User/new"): b + New user
 
 		if data.length !== 0
 			table.pure-table
@@ -11,7 +11,7 @@ block content
 					tr
 						th Username
 						th Email
-						th Editar
+						th Edit
 
 				tbody
 					each user in data

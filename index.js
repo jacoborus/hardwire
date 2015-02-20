@@ -144,7 +144,7 @@ var hardwire = function (dir) {
 
 	conf = loadConfig( dir );
 	conf.rootPath = dir;
-	var hwConf = require( conf.rootPath + '/hw-conf.json');
+	var hwConf = require( conf.rootPath + '/config/default.json');
 	var plugins = getPlugins( hwConf.plugins );
 
 	// build views and public files

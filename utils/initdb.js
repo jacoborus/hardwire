@@ -8,7 +8,7 @@ password: admin
 var fs = require('fs'),
 	path = require('path'),
 	crypto = require('crypto'),
-	configPath = path.resolve('./hw-conf.json'),
+	configPath = path.resolve('./config/default.json'),
 	mongoose = require( 'mongoose' ),
 	config;
 
@@ -50,14 +50,11 @@ var creadmin = function() {
 		email: String,
 		since: Date,
 		provider: String,
-		hashed_password: String,
+		hashedPassword: String,
 		password: String,
-		_password: String,
 		rol: String,
 		salt: String,
-		authToken: String,
-		lastVisit: Date,
-		activo: Boolean
+		authToken: String
 	});
 	User = mongoose.model('User', UserSchema);
 	sal = makeSalt();
@@ -65,7 +62,7 @@ var creadmin = function() {
 		email: 'admin@admin.com',
 		since: new Date(),
 		provider: 'local',
-		hashed_password: encryptPassword('admin', sal),
+		hashedPassword: encryptPassword('admin', sal),
 		salt: sal,
 		rol: 'admin',
 		authToken: String,

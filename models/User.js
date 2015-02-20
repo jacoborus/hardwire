@@ -1,16 +1,11 @@
-
-var Schema, authTypes, crypto;
-
+'use strict';
 
 exports.wiretree = function (tools, config, mongoose) {
 
-	var uniid = tools.uniid;
+	var crypto = require('crypto'),
+		Schema = mongoose.Schema,
+		authTypes = ['local'];
 
-	Schema = mongoose.Schema;
-
-	crypto = require('crypto');
-
-	authTypes = ["local"];
 	/*
 		User Schema -----------------------
 	 */
@@ -18,7 +13,7 @@ exports.wiretree = function (tools, config, mongoose) {
 	UserSchema = new Schema({
 		email: {
 			type: String,
-			"default": "",
+			'default': '',
 			unique: true
 		},
 		username: {
@@ -28,29 +23,29 @@ exports.wiretree = function (tools, config, mongoose) {
 		since: {
 			type: Date,
 			required: true,
-			"default": new Date()
+			'default': new Date()
 		},
 		provider: {
 			type: String,
-			"default": ""
+			'default': ''
 		},
-		hashed_password: {
+		hashedPassword: {
 			type: String,
 			required: true,
-			"default": ""
+			'default': ''
 		},
 		rol: {
 			type: String,
 			required: true,
-			"default": "registered"
+			'default': 'registered'
 		},
 		salt: {
 			type: String,
-			"default": ""
+			'default': ''
 		},
 		authToken: {
 			type: String,
-			"default": ""
+			'default': ''
 		},
 		ident: {
 			type: String
@@ -64,7 +59,7 @@ exports.wiretree = function (tools, config, mongoose) {
 		lastVisit: {
 			type: Date,
 			required: true,
-			"default": Date.now
+			'default': Date.now
 		},
 		active: {
 			type: Boolean
@@ -74,11 +69,12 @@ exports.wiretree = function (tools, config, mongoose) {
 	/*
 		Virtuals ---------------------------------------------------
 	 */
-	UserSchema.virtual( "password" )
+	UserSchema.virtual( 'password' )
 	.set( function (password) {
 		this.salt = this.makeSalt();
 		this.recoverHash = undefined;
-		return this.hashed_password = this.encryptPassword( password );
+		this.hashedPassword = this.encryptPassword( password );
+		return this.hashedPassword;
 	});
 
 
@@ -89,17 +85,17 @@ exports.wiretree = function (tools, config, mongoose) {
 		return value && value.length;
 	};
 
-	UserSchema.path("email").validate((function (email) {
+	UserSchema.path('email').validate(function (email) {
 		if (authTypes.indexOf(this.provider) !== -1) {
 			return true;
 		}
 		return email.length;
-	}), "Email cannot be blank");
+	}, 'Email cannot be blank');
 
-	UserSchema.path("email").validate((function(email, fn) {
+	UserSchema.path('email').validate(function(email, fn) {
 		var User;
-		User = mongoose.model("User");
-		if (this.isNew || this.isModified("email")) {
+		User = mongoose.model('User');
+		if (this.isNew || this.isModified('email')) {
 			return User.find({
 				email: email
 			}).exec(function(err, users) {
@@ -108,26 +104,26 @@ exports.wiretree = function (tools, config, mongoose) {
 		} else {
 			return fn(true);
 		}
-	}), "Email already exists");
+	}, 'Email already exists');
 
-	UserSchema.path("hashed_password").validate(( function (hashed_password) {
+	UserSchema.path('hashedPassword').validate( function (hashedPassword) {
 		if (authTypes.indexOf(this.provider) !== -1) {
 			return true;
 		}
-		return hashed_password.length;
-	}), "Password cannot be blank");
+		return hashedPassword.length;
+	}, 'Password cannot be blank');
 
 	/*
 		Pre-save hooks --------------------------------------------------------------------------
 	 */
 
-	UserSchema.pre("save", function(next) {
+	UserSchema.pre('save', function(next) {
 		if (!this.isNew) {
 			return next();
 		}
-		this.provider = "local";
+		this.provider = 'local';
 		if (!validatePresenceOf(this.password) && authTypes.indexOf(this.provider) === -1) {
-			return next(new Error("Invalid password"));
+			return next(new Error('Invalid password'));
 		} else {
 			return next();
 		}
@@ -145,7 +141,7 @@ exports.wiretree = function (tools, config, mongoose) {
 				@api public
 		 */
 		authenticate: function(plainText) {
-			return this.encryptPassword(plainText) === this.hashed_password;
+			return this.encryptPassword(plainText) === this.hashedPassword;
 		},
 
 		/*
@@ -154,7 +150,7 @@ exports.wiretree = function (tools, config, mongoose) {
 				@api public
 		 */
 		makeSalt: function() {
-			return Math.round(new Date().valueOf() * Math.random()) + "";
+			return Math.round(new Date().valueOf() * Math.random()) + '';
 		},
 
 		/*
@@ -166,18 +162,18 @@ exports.wiretree = function (tools, config, mongoose) {
 		encryptPassword: function(password) {
 			var encrypred, err;
 			if (!password) {
-				return "";
+				return '';
 			}
 			encrypred = void 0;
 			try {
-				encrypred = crypto.createHmac("sha1", this.salt).update(password).digest("hex");
+				encrypred = crypto.createHmac('sha1', this.salt).update(password).digest('hex');
 				return encrypred;
 			} catch (_error) {
 				err = _error;
-				return "";
+				return '';
 			}
 		}
 	};
-	return mongoose.model("User", UserSchema);
+	return mongoose.model('User', UserSchema);
 };
 
