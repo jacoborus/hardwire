@@ -2,7 +2,7 @@
 
 var Schema;
 
-exports.wiretree = function (tools, config, mongoose) {
+exports.wiretree = function (tools, config, mongoose, mailer) {
 
 	Schema = mongoose.Schema;
 
@@ -28,6 +28,10 @@ exports.wiretree = function (tools, config, mongoose) {
 		tls: Boolean,
 		timeout: Number,
 		domain: String
+	});
+
+	EmailSchema.post( 'save', function (doc) {
+		mailer.addAccount( doc.account, doc );
 	});
 
 	return mongoose.model('Email', EmailSchema);

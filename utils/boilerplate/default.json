@@ -9,7 +9,7 @@
             "ssl": true
         }
     },
-    "globalUrl" : "localhost:3000",
+    "globalUrl" : "http://localhost:3000",
     "logPath": "datapack/log",
     "mongodb":{
         "uri":"mongodb://localhost:27017/hw-web"

@@ -1,7 +1,9 @@
 Hardwire
 ========
 
-Scalable CMS framework for node.js. **NOT READY FOR PRODUCTION**
+**IN EARLY DEVELOPMENT. NOT READY FOR PRODUCTION**
+
+Scalable CMS framework for node.js.
 
 Built on top of:
 
@@ -68,7 +70,7 @@ GET		/user/login			Login page
 GET		/user/logout		Login page
 ```
 
-### Administración
+### Admin API
 ```
 GET		/admin							Admin dashboard
 // docs
@@ -89,6 +91,6 @@ PUT		/admin/keyval/:model/:id		Update doc
 
 ---
 
-© 2014 Jacobo Tabernero - [jacoborus](https://github.com/jacoborus)
+© 2015 Jacobo Tabernero - [jacoborus](https://github.com/jacoborus)
 
 Released under [MIT License](https://raw.github.com/jacoborus/hardwire/master/LICENSE)
