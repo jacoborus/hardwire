@@ -1,10 +1,10 @@
 'use strict';
 
-var Schema;
+var mailer = require('curlymail');
 
-exports.wiretree = function (tools, config, mongoose, mailer) {
+exports.wiretree = function (tools, config, mongoose) {
 
-	Schema = mongoose.Schema;
+	var Schema = mongoose.Schema;
 
 	/*
 		Email Schema -----------------------
