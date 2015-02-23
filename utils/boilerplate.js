@@ -16,7 +16,7 @@ mkdirp( dir + '/config');
 cp.sync(bFolder + '/app.js', dir + '/app.js' );
 cp.sync(bFolder + '/README.md', dir + '/README.md' );
 cp.sync( bFolder + '/default.json', dir + '/config/default.json');
-cp.sync( bFolder + '/default.json', dir + '/config/production.json');
+cp.sync( bFolder + '/production.json', dir + '/config/production.json');
 cp.sync( bFolder + '/gitignore', dir + '/.gitignore');
 
 

@@ -1,14 +1,6 @@
 {
     "character_encoding":"utf-8",
     "cookie_secret":"mysecret",
-    "emailAccounts": {
-        "main": {
-            "user": "username@domain.com",
-            "password": "P455W0RD",
-            "host": "smtp.gmail.com",
-            "ssl": true
-        }
-    },
     "globalUrl" : "http://localhost:3000",
     "logPath": "datapack/log",
     "mongodb":{
