@@ -12,8 +12,7 @@ exports.wiretree = function (config) {
 	return function (model, op) {
 		if (list[model]) {
 			return toList( list[model][op] );
-		} else {
-			return '';
 		}
+		return '';
 	};
 };

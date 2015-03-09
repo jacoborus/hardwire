@@ -25,20 +25,18 @@ var objLength = function (obj) {
 	return count;
 };
 
-// get module folders
+// get an array with /node_module folder paths
 var getModuleFolders = function () {
 	var folders = [],
-		nmPath = path.resolve('./node_modules'),
-		f, len, files;
+		nmPath = path.resolve('./node_modules');
 
 	if (fs.existsSync( nmPath)) {
-		files = fs.readdirSync( nmPath );
-		len = files.length;
-		for (f in files) {
-			if (fs.statSync( nmPath + '/' + files[f] ).isDirectory()) {
-				folders.push( nmPath + '/' + files[f] );
+		fs.readdirSync( nmPath )
+		.forEach( function (fileName) {
+			if (fs.statSync( nmPath + '/' + fileName ).isDirectory()) {
+				folders.push( nmPath + '/' + fileName );
 			}
-		}
+		});
 	}
 	return folders;
 };
@@ -47,31 +45,31 @@ var getModuleFolders = function () {
 // get plugin folders
 var getPluginFolders = function () {
 	var folders = getModuleFolders(),
-		pPaths = {},
-		f, pName;
+		pPaths = {};
 
-	for (f in folders) {
-		if (fs.existsSync( folders[f] + '/hw-plugin.json' )){
-			pName = require( folders[f] + '/hw-plugin.json' ).name;
+	folders.forEach( function (folder) {
+		var pName;
+		if (fs.existsSync( folder + '/hw-plugin.json' )){
+			pName = require( folder + '/hw-plugin.json' ).name;
 			if (pName) {
-				pPaths[pName] = folders[f];
+				pPaths[pName] = folder;
 			}
 		}
-	}
+	});
 	return pPaths;
 };
 
 var getPlugins = function (plugNames) {
 	var plugins = {},
 		pFolders = getPluginFolders(),
-		i, j;
-	for (i in plugNames) {
-		for (j in pFolders) {
-			if (j === plugNames[i] ) {
-				plugins[j] = pFolders[j];
+		i;
+	plugNames.forEach( function (name) {
+		for (i in pFolders) {
+			if (i === name ) {
+				plugins[i] = pFolders[i];
 			}
 		}
-	}
+	});
 	return plugins;
 };
 

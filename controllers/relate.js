@@ -51,15 +51,13 @@ var counterCall = function (docs, slot, model, hookField, callback) {
 
 	var next = function (err) {
 		if (err) { callback( err );}
-		c++;
-		if (c === limit) {
+		if (++c === limit) {
 			callback( null, docs );
 		}
 	};
-	var i;
-	for (i in docs) {
-		getRelatedToDocs( model, docs[i], slot, hookField, next );
-	}
+	docs.forEach( function (doc) {
+		getRelatedToDocs( model, doc, slot, hookField, next );
+	});
 };
 
 
@@ -70,8 +68,7 @@ var loop = function (docs, relConfig, mongoose, callback) {
 
 	var next = function (err) {
 		if (err) { callback( err );}
-		c++;
-		if (c === limit) {
+		if (++c === limit) {
 			callback( null, docs );
 		}
 	};
@@ -86,7 +83,7 @@ exports.wiretree = function (config, mongoose) {
 
 	var list = config.relate || {};
 
-	var relate = function (docs, modelName, op, callback) {
+	return function (docs, modelName, op, callback) {
 
 		var relConfig = getRelateConfig( list, modelName, op );
 
@@ -98,5 +95,4 @@ exports.wiretree = function (config, mongoose) {
 
 		loop( docs, relConfig, mongoose, callback );
 	};
-	return relate;
 };

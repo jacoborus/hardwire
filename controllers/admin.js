@@ -1,12 +1,8 @@
 'use strict';
 
-var deepExt, fs, limpia;
+var fs = require('fs');
 
-fs = require('fs');
-
-
-
-deepExt = function(ori, desti) {
+var deepExt = function(ori, desti) {
 	var key, val;
 	for (key in ori) {
 		val = ori[key];
@@ -22,7 +18,7 @@ deepExt = function(ori, desti) {
 	return desti;
 };
 
-limpia = function(query) {
+var limpia = function(query) {
 	var prop, val;
 	for (prop in query) {
 		val = query[prop];
@@ -51,20 +47,14 @@ exports.wiretree = function (app, log, models, crudsControl, populateControl) {
 
 			search: function (req, res, next) {
 				var modelName = req.Model.modelName,
-					query = req.query,
 					po = popu( modelName, 'search' );
 
-				cruds.search( modelName, query, {population: po}, function (err, data) {
-					if (err) {
-						console.log( err );
-						return res.send( 500 );
-					}
-					if (data === null) {
-						data = [];
-					}
+				cruds.search( modelName, req.query, {population: po}, function (err, data) {
+					if (err) { return next( err ); }
+
 					res.render( 'admin/docs/' + modelName + '/list', {
 						title: modelName + 's',
-						data: data
+						data: data || []
 					});
 				});
 			},
@@ -164,9 +154,7 @@ exports.wiretree = function (app, log, models, crudsControl, populateControl) {
 
 			taxonomy: function (req, res, next) {
 				cruds.search( req.modelName, {}, {}, function (err, data) {
-					if (err) {
-						return next(err);
-					}
+					if (err) { return next( err );}
 					res.json({
 						ok: true,
 						data: data
