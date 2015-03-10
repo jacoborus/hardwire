@@ -1,6 +1,6 @@
 {
   "name": "hardwire",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "description": "CMS framework",
   "main": "index.js",
   "scripts": {
@@ -28,7 +28,7 @@
     "cookie-parser": "^1.1.0",
     "cookies": "^0.5.0",
     "cp": "^0.2.0",
-    "curlymail": "^1.1.0",
+    "curlymail": "^1.1.2",
     "debug": "^2.1.1",
     "deep-extend": "^0.3.2",
     "deepjson": "0.0.5",
@@ -45,13 +45,13 @@
     "morgan": "^1.2.3",
     "multer": "^0.1.4",
     "nanobar": "^0.2.0",
-    "ncp": "^1.0.1",
+    "ncp": "^2.0.0",
     "passport": "^0.2.0",
     "passport-local": "^1.0.0",
     "static-favicon": "^1.0.2",
     "submitter": "^0.0.7",
     "winston": "^0.9.0",
-    "wiretree": "^0.5.0"
+    "wiretree": "^1.0.1"
   },
   "author": "Jacobo Tabernero - github.com/jacoborus <jacobo@xarope.eu>",
   "license": "MIT"

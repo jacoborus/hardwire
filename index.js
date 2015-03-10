@@ -1,7 +1,5 @@
 'use strict';
 
-// Forked from https://raw.githubusercontent.com/autoric/express-train/96adfe3675f6753dfa280f5e2ee34691c88c0d82/lib/app.js
-
 // module dependencies
 
 var express = require('express'),
@@ -88,7 +86,7 @@ var hardwire = function (dir) {
 				tree.folder( folder, {
 					group : group,
 					suffix: suffix
-				}).exec( cb );
+				}).then( cb );
 			} else {
 				cb();
 			}
@@ -121,13 +119,8 @@ var hardwire = function (dir) {
 		.folder( './app/routes', {
 			group: 'router',
 			suffix: 'Router'
-		}).exec( function () {
-
-			tree.get( 'dal' );
-			tree.get( 'views' );
-			tree.get( 'passp' );
-			tree.get( 'middleware' );
-			tree.get( 'router' );
+		})
+		.resolve( function () {
 			if (!conf.ssl) {
 				http = require('http');
 				http.createServer( app ).listen( conf.port );
@@ -151,11 +144,11 @@ var hardwire = function (dir) {
 	var app = express();
 
 	tree
-	.add( conf, 'config' )
-	.add( tree, 'tree' )
-	.add( mongoose, 'mongoose')
-	.add( app, 'app' )
-	.add( express, 'express' )
+	.add( 'config', conf )
+	.add( 'tree', tree )
+	.add( 'mongoose', mongoose )
+	.add( 'app', app )
+	.add( 'express', express )
 	.folder( path.resolve( __dirname, 'lib' ))
 	// core models
 	.folder( path.resolve( __dirname, 'models' ), {
@@ -178,7 +171,7 @@ var hardwire = function (dir) {
 		suffix: 'Router'
 	})
 
-	.exec( function () {
+	.then( function () {
 		/* - LOAD PLUGINS - */
 		var count = 0, i;
 
@@ -230,3 +223,4 @@ hardwire.version = pkg.version;
 
 // expose `hardwire()`
 module.exports = hardwire;
+
