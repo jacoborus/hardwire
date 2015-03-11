@@ -1,6 +1,6 @@
 {
   "name": "hardwire",
-  "version": "0.2.12",
+  "version": "0.2.13",
   "description": "CMS framework",
   "main": "index.js",
   "scripts": {
@@ -30,7 +30,6 @@
     "cp": "^0.2.0",
     "curlymail": "^1.1.2",
     "debug": "^2.1.1",
-    "deep-extend": "^0.3.2",
     "deepjson": "0.0.5",
     "errorhandler": "^1.0.1",
     "express": "^4.8.5",

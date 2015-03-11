@@ -23,6 +23,10 @@ var objLength = function (obj) {
 	return count;
 };
 
+var newObjLength = function (obj) {
+	return Object.keys( obj ).length;
+};
+
 // get an array with /node_module folder paths
 var getModuleFolders = function () {
 	var folders = [],
