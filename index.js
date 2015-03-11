@@ -149,24 +149,24 @@ var hardwire = function (dir) {
 	.add( 'mongoose', mongoose )
 	.add( 'app', app )
 	.add( 'express', express )
-	.folder( path.resolve( __dirname, 'lib' ))
+	.folder( path.resolve( __dirname, 'app', 'lib' ))
 	// core models
-	.folder( path.resolve( __dirname, 'models' ), {
+	.folder( path.resolve( __dirname, 'app', 'models' ), {
 		group : 'models',
 		suffix: 'Model'
 	})
 	// core controllers
-	.folder( path.resolve( __dirname, 'controllers' ), {
+	.folder( path.resolve( __dirname, 'app', 'controllers' ), {
 		group: 'control',
 		suffix: 'Control'
 	})
 	// core auth
-	.folder( path.resolve( __dirname, 'sys/auth' ), {
+	.folder( path.resolve( __dirname, 'app', 'sys/auth' ), {
 		group: 'auth',
 		suffix: 'Auth'
 	})
 	// core routes
-	.folder( path.resolve( __dirname, 'routes' ), {
+	.folder( path.resolve( __dirname, 'app', 'routes' ), {
 		group: 'router',
 		suffix: 'Router'
 	})

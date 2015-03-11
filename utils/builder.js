@@ -57,8 +57,8 @@ var getCopy = function (dir) {
 module.exports = function (plugins, dir) {
 	var paths = [],
 		copy = getCopy( dir ),
-		viewsOrigin = path.resolve( hwFolder, 'views' ),
-		publicOrigin = path.resolve( hwFolder, 'public' ),
+		viewsOrigin = path.resolve( hwFolder, 'app', 'views' ),
+		publicOrigin = path.resolve( hwFolder, 'app', 'public' ),
 		p;
 
 	// - copy views and plublic folders from plugins
