@@ -12,7 +12,7 @@ var cleanQuery = function (query) {
 	return query;
 };
 
-exports.wiretree = function (log, models, fm, relateControl) {
+exports.wiretree = function (models, fmSrv, relateControl) {
 
 	var mod = {},
 		relate = relateControl;
@@ -25,7 +25,7 @@ exports.wiretree = function (log, models, fm, relateControl) {
 			if (errValidate) {
 				return callback( errValidate );
 			}
-			fm.add( modelName, files, doc, function (errStore) {
+			fmSrv.add( modelName, files, doc, function (errStore) {
 				if (errStore) {
 					return callback( errStore );
 				}
@@ -78,7 +78,7 @@ exports.wiretree = function (log, models, fm, relateControl) {
 				if (errValidate) {
 					return callback( errValidate );
 				}
-				fm.add( modelName, files, doc, function (errStore) {
+				fmSrv.add( modelName, files, doc, function (errStore) {
 					if ( errStore ) {
 						return callback( errStore );
 					}

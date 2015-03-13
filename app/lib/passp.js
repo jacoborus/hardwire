@@ -2,7 +2,7 @@
 
 var passport = require('passport');
 
-exports.wiretree = function ( config, UserModel ) {
+exports.wiretree = function (config, UserModel ) {
 	var User = UserModel;
 
 	// serialize sessions

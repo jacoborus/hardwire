@@ -1,6 +1,5 @@
 'use strict';
 var path = require('path'),
-	ncp = require('ncp'),
 	mkdirp = require('mkdirp'),
 	cp = require('cp'),
 	dir = path.resolve('.'),

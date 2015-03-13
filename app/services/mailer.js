@@ -2,7 +2,7 @@
 // Get dependencies
 var mailer = require('curlymail');
 
-exports.wiretree = function (log, EmailModel) {
+exports.wiretree = function (EmailModel) {
 
 	// load emails from DB on app start
 	EmailModel

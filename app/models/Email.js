@@ -2,7 +2,7 @@
 
 var mailer = require('curlymail');
 
-exports.wiretree = function (tools, config, mongoose) {
+exports.wiretree = function (config, mongoose) {
 
 	var Schema = mongoose.Schema;
 

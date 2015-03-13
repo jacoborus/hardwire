@@ -1,6 +1,6 @@
 'use strict';
 
-exports.wiretree = function (tools, config, mongoose) {
+exports.wiretree = function (config, mongoose) {
 
 	var crypto = require('crypto'),
 		Schema = mongoose.Schema,

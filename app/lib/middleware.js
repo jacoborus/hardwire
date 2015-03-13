@@ -16,7 +16,7 @@ var path = require('path'),
 
 // Middleware
 
-exports.wiretree = function (app, express, config, UserModel) {
+exports.wiretree = function (app, express, config, UserModel, wtDone) {
 
 	var User = UserModel,
 		SessionStore, sessionStore, sessionConfig;
@@ -67,7 +67,7 @@ exports.wiretree = function (app, express, config, UserModel) {
 	app.use( bodyParser.json() );
 	var tempFolder = path.resolve( rootPath, config.tempFolder );
 	app.use( multer({ dest: tempFolder }));
-	app.use( methodOverride() );
+	app.use( methodOverride( ));
 
 	/*
 	 * Session storage  ----------------------------------------
@@ -93,8 +93,8 @@ exports.wiretree = function (app, express, config, UserModel) {
 	app.use( session( sessionConfig ));
 
 	// use passport session
-	app.use( passport.initialize() );
-	app.use( passport.session() );
+	app.use( passport.initialize( ));
+	app.use( passport.session( ));
 
 
 /*
@@ -113,7 +113,7 @@ exports.wiretree = function (app, express, config, UserModel) {
 */
 
 	// enable global url
-	app.use( function ( req, res, next ) {
+	app.use( function (req, res, next) {
 		req.globalUrl = config.globalUrl;
 		next();
 	});
@@ -122,18 +122,13 @@ exports.wiretree = function (app, express, config, UserModel) {
 	app.use( function (req, res, next) {
 		req.admin = false;
 		if ( req.isAuthenticated() ) {
-
-			User.find({ _id: req.session.passport.user }, function (err, data) {
-				if (err) {
-					next(err);
-				} else {
-					req.session.profile = data[0];
-					next();
-				}
+			return User.find({ _id: req.session.passport.user }, function (err, data) {
+				if (err) { return next(err);}
+				req.session.profile = data[0];
+				next();
 			});
-		} else {
-			next();
 		}
+		next();
 	});
 
 	// expose req in locals
@@ -142,5 +137,5 @@ exports.wiretree = function (app, express, config, UserModel) {
 		next();
 	});
 
-	return true;
+	wtDone();
 };

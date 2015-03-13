@@ -29,7 +29,7 @@ var limpia = function(query) {
 	return query;
 };
 
-exports.wiretree = function (app, log, models, crudsControl, populateControl) {
+exports.wiretree = function (app, models, crudsControl, populateControl) {
 	var cruds = crudsControl;
 	var popu = populateControl;
 	return {

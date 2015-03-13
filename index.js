@@ -113,6 +113,12 @@ var hardwire = function (dir) {
 			suffix: 'Control'
 		})
 
+		// Services
+		.folder( './app/services', {
+			group : 'services',
+			suffix: 'Srv'
+		})
+
 		// Passports
 		.folder( './app/sys/auth', {
 			group : 'auth',
@@ -164,6 +170,12 @@ var hardwire = function (dir) {
 		group: 'control',
 		suffix: 'Control'
 	})
+
+	// core services
+	.folder( path.resolve( __dirname, 'app', 'services' ), {
+		group: 'services',
+		suffix: 'Srv'
+	})
 	// core auth
 	.folder( path.resolve( __dirname, 'app', 'sys/auth' ), {
 		group: 'auth',
@@ -190,6 +202,11 @@ var hardwire = function (dir) {
 						},
 						function (callback){
 							loadFolder( plugins[i], 'controllers', 'control', 'Control', function () {
+								callback(null, 'one');
+							});
+						},
+						function (callback){
+							loadFolder( plugins[i], 'services', 'services', 'Srv', function () {
 								callback(null, 'one');
 							});
 						},

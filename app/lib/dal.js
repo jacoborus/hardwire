@@ -1,4 +1,4 @@
-exports.wiretree = function (mongoose, config) {
+exports.wiretree = function (mongoose, config, wtDone) {
 	console.log( 'connecting to database...' );
 	//set up mongoose database connection
 	if(!mongoose.connection.readyState){
@@ -7,8 +7,8 @@ exports.wiretree = function (mongoose, config) {
 				var msg = 'Failed to connect to mongodb instance at ' + config.mongodb.uri + '. Please confirm database instance is running.';
 				throw new Error(msg);
 			}
-			console.log( 'database connection ok' );
-			return true;
+			console.log( 'MongoDB connection ok' );
+			wtDone( true );
 		});
 	} else {
 		console.log('no mongoose connection readyState');

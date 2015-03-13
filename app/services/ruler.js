@@ -2,7 +2,6 @@
 
 var Ruler = require('miniruler');
 
-
 var ruler = new Ruler();
 
 ruler.setActions({
@@ -14,6 +13,4 @@ ruler.setActions({
     }
 });
 
-exports.wiretree = function () {
-	return ruler;
-};
+module.exports = ruler;

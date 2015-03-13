@@ -1,9 +1,9 @@
 'use strict';
 
-exports.wiretree = function (app, config, log, UserModel, mailer, tools) {
+exports.wiretree = function (app, config, UserModel, mailerSrv, toolsSrv) {
 	var User = UserModel,
 		mod = {},
-		uniid = tools.uniid;
+		uniid = toolsSrv.uniid;
 
 	mod.logout = function (req, res) {
 		req.logout();
@@ -62,7 +62,7 @@ exports.wiretree = function (app, config, log, UserModel, mailer, tools) {
 				data[0].recoverHash = recoverHash;
 				data[0].save( function (err) {
 					if (err) {return next(err);}
-					mailer.send( 'main', {
+					mailerSrv.send( 'main', {
 						from:    '{{appname}}',
 					    to:      '{{username}} <{{email}}>',
 					    subject: 'Recover password',
