@@ -166,10 +166,23 @@ exports.wiretree = function (app, models, crudsControl, populateControl) {
 		 * KEYVAL DOCS    ---------------------------------------------------------------
 		 */
 		single: {
+			edit: function (req, res) {
+				var model = models[ req.Model.modelName ];
+				model.read( function (err, data) {
+					if (err) {
+						console.log( err );
+						return res.send( 500 );
+					}
+					res.render( 'admin/single/' + model.key, {
+						title: 'Edit ' + model.key,
+						data: data
+					});
+				});
+			},
 
 			update: function (req, res) {
-
-				cruds.update( req.params.id, req.Model.modelName, req.body, req.files, function (err, data) {
+				var model = models[ req.Model.modelName ];
+				model.update( req.body, function (err, data) {
 					if (err) {
 						console.log( err );
 						return res.json({
@@ -179,23 +192,6 @@ exports.wiretree = function (app, models, crudsControl, populateControl) {
 					res.json({
 						ok: true,
 						id: data.id
-					});
-				});
-			},
-
-			edit: function (req, res) {
-				var modelName = req.Model.modelName;
-				cruds.read( modelName, req.params.id, function (err, data) {
-					if (err) {
-						console.log( err );
-						return res.send( 500 );
-					}
-					if (data === null) {
-						return res.send( 404 );
-					}
-					res.render( 'admin/single/' + modelName, {
-						title: 'Edit ' + modelName + ' ' + req.params.id,
-						data: data
 					});
 				});
 			}

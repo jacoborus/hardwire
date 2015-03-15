@@ -53,7 +53,7 @@ options = {
 		console.log(data);
 		nanobar.go(100);
 		if (data.ok) {
-			window.location.assign("/admin/docs/" + data.model + "/" + data.id)
+			window.location.assign("/admin/collection/" + data.model + "/" + data.id)
 		} else {
 			alert('Error with form');
 		}

@@ -3,7 +3,7 @@ extends ../../layout/layout
 block content
 	section#list-Email
 		h1 Emails
-		a.pure-button(href="/admin/docs/Email/new"): b + New email
+		a.pure-button(href="/admin/collection/Email/new"): b + New email
 
 		if data.length !== 0
 			table.pure-table
@@ -16,8 +16,8 @@ block content
 				tbody
 					each email in data
 						tr
-							td: a(href='/admin/docs/Email/'+ email._id)!= email.account
+							td: a(href='/admin/collection/Email/'+ email._id)!= email.account
 							td= email.user
-							td: a(href="/admin/docs/Email/" + email._id + "/edit") Edit
+							td: a(href="/admin/collection/Email/" + email._id + "/edit") Edit
 
 		p #{data.length} emails
