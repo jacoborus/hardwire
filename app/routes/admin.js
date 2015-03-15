@@ -21,8 +21,8 @@ module.exports.wiretree = function (app, adminControl, models, wtDone) {
 	app.route( '/admin/collection/:model/:id' ).put( reqAdmin, adminControl.collection.update );
 	app.route( '/admin/collection/:model/:id' ).delete( reqAdmin, adminControl.collection.destroy );
 	// single docs
-	app.route( '/admin/single/:model/:id/edit' ).get( reqAdmin, adminControl.single.edit );
-	app.route( '/admin/single/:model/:id' ).put( reqAdmin, adminControl.single.update );
+	app.route( '/admin/single/:model' ).get( reqAdmin, adminControl.single.edit );
+	app.route( '/admin/single/:model' ).put( reqAdmin, adminControl.single.update );
 	// taxonomy docs
 	app.route( '/admin/taxonomy/:model' ).get( reqAdmin, adminControl.collection.taxonomy );
 
