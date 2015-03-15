@@ -11,11 +11,5 @@ exports.wiretree = function () {
 		});
 	};
 
-	mod.login =  function (req, res, next) {
-		res.render('user/login', {
-			title: 'Login'
-		});
-	};
-
 	return mod;
 };

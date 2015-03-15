@@ -18,9 +18,7 @@ exports.wiretree = function (config, UserModel ) {
 
 
 	// use local strategy
-	var LocalStrategy;
-
-	LocalStrategy = require('passport-local').Strategy;
+	var LocalStrategy = require('passport-local').Strategy;
 	passport.use( new LocalStrategy(
 		{
 			usernameField: 'email',
@@ -31,12 +29,8 @@ exports.wiretree = function (config, UserModel ) {
 			User.findOne({ email: email }, function (err, user) {
 
 				if (err) { return done(err); }
-				if (!user) {
-					return done( null, false, {message: 'Unknown user'} );
-				}
-				// mongoStore connection
-				if (!user.authenticate(password)) {
-					return done( null, false, {message: 'Invalid password'} );
+				if (!user || !user.authenticate(password)) {
+					return done( null, false, {message: 'Invalid user or password'} );
 				}
 				return done(null, user);
 			});

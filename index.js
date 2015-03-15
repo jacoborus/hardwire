@@ -197,27 +197,27 @@ var hardwire = function (dir) {
 					[
 						function (callback){
 							loadFolder( plugins[i], 'models', 'models', 'Model', function () {
-								callback(null, 'one');
+								callback( null, 'one');
 							});
 						},
 						function (callback){
 							loadFolder( plugins[i], 'controllers', 'control', 'Control', function () {
-								callback(null, 'one');
+								callback( null, 'one');
 							});
 						},
 						function (callback){
 							loadFolder( plugins[i], 'services', 'services', 'Srv', function () {
-								callback(null, 'one');
+								callback( null, 'one');
 							});
 						},
 						function (callback){
 							loadFolder( plugins[i], 'sys/auth', 'auth', 'Auth', function () {
-								callback(null, 'one');
+								callback( null, 'one');
 							});
 						},
 						function (callback){
 							loadFolder( plugins[i], 'routes', 'router', 'Router', function () {
-								callback(null, 'one');
+								callback( null, 'one');
 							});
 						}
 					],

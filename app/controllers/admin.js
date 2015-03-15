@@ -43,7 +43,7 @@ exports.wiretree = function (app, models, crudsControl, populateControl) {
 		/*
 		 * APP DOCS    ---------------------------------------------------------------
 		 */
-		docs: {
+		collection: {
 
 			search: function (req, res, next) {
 				var modelName = req.Model.modelName,
@@ -52,7 +52,7 @@ exports.wiretree = function (app, models, crudsControl, populateControl) {
 				cruds.search( modelName, req.query, {population: po}, function (err, data) {
 					if (err) { return next( err ); }
 
-					res.render( 'admin/docs/' + modelName + '/list', {
+					res.render( 'admin/collection/' + modelName + '/list', {
 						title: modelName + 's',
 						data: data || []
 					});
@@ -86,7 +86,7 @@ exports.wiretree = function (app, models, crudsControl, populateControl) {
 					if (data === null) {
 						return res.send( 404 );
 					}
-					res.render( 'admin/docs/' + modelName + '/show', {
+					res.render( 'admin/collection/' + modelName + '/show', {
 						title: 'Doc : ' + data.id,
 						data: data
 					});
@@ -128,7 +128,7 @@ exports.wiretree = function (app, models, crudsControl, populateControl) {
 
 			new: function (req, res, next) {
 				var modelName = req.Model.modelName;
-				return res.render('admin/docs/' + modelName + '/new', {
+				return res.render('admin/collection/' + modelName + '/new', {
 					title: 'Crear ' + modelName,
 					data: req.body
 				});
@@ -145,7 +145,7 @@ exports.wiretree = function (app, models, crudsControl, populateControl) {
 					if (data === null) {
 						return res.send( 404 );
 					}
-					res.render('admin/docs/' + modelName + '/edit', {
+					res.render('admin/collection/' + modelName + '/edit', {
 						title: 'Edit ' + modelName + ' ' + req.params.id,
 						data: data
 					});
@@ -165,7 +165,7 @@ exports.wiretree = function (app, models, crudsControl, populateControl) {
 		/*
 		 * KEYVAL DOCS    ---------------------------------------------------------------
 		 */
-		keyval: {
+		single: {
 
 			update: function (req, res) {
 
@@ -193,7 +193,7 @@ exports.wiretree = function (app, models, crudsControl, populateControl) {
 					if (data === null) {
 						return res.send( 404 );
 					}
-					res.render('admin/docs/' + modelName + '/edit', {
+					res.render( 'admin/single/' + modelName, {
 						title: 'Edit ' + modelName + ' ' + req.params.id,
 						data: data
 					});

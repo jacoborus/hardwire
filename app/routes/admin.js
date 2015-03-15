@@ -8,30 +8,25 @@ var reqAdmin = function (req, res, next) {
 	}
 };
 
-module.exports.wiretree = function (app, adminControl, models) {
+module.exports.wiretree = function (app, adminControl, models, wtDone) {
 
-	/*
-	 * ADMIN    ----------------------------------------------------------------------
-	 */
+	/* ---   ADMIN PANEL   --- */
 	app.route( '/admin' ).get( reqAdmin, adminControl.index );
-	/* docs */
-	app.route( '/admin/docs/:model' ).get( reqAdmin, adminControl.docs.search );
-	app.route( '/admin/docs/:model/new' ).get( reqAdmin, adminControl.docs.new );
-	app.route( '/admin/docs/:model' ).post( reqAdmin, adminControl.docs.create );
-	app.route( '/admin/docs/:model/:id' ).get( reqAdmin, adminControl.docs.read );
-	app.route( '/admin/docs/:model/:id/edit' ).get( reqAdmin, adminControl.docs.edit );
-	app.route( '/admin/docs/:model/:id' ).put( reqAdmin, adminControl.docs.update );
-	app.route( '/admin/docs/:model/:id' ).delete( reqAdmin, adminControl.docs.destroy );
-	/*	 * keyval docs *	 */
-	app.route( '/admin/keyval/:model/:id/edit' ).get( reqAdmin, adminControl.keyval.edit );
-	app.route( '/admin/keyval/:model/:id' ).put( reqAdmin, adminControl.keyval.update );
-	/* taxonomy */
-	app.route( '/admin/taxonomy/:model' ).get( reqAdmin, adminControl.docs.taxonomy );
+	// collection docs
+	app.route( '/admin/collection/:model' ).get( reqAdmin, adminControl.collection.search );
+	app.route( '/admin/collection/:model/new' ).get( reqAdmin, adminControl.collection.new );
+	app.route( '/admin/collection/:model' ).post( reqAdmin, adminControl.collection.create );
+	app.route( '/admin/collection/:model/:id' ).get( reqAdmin, adminControl.collection.read );
+	app.route( '/admin/collection/:model/:id/edit' ).get( reqAdmin, adminControl.collection.edit );
+	app.route( '/admin/collection/:model/:id' ).put( reqAdmin, adminControl.collection.update );
+	app.route( '/admin/collection/:model/:id' ).delete( reqAdmin, adminControl.collection.destroy );
+	// single docs
+	app.route( '/admin/single/:model/:id/edit' ).get( reqAdmin, adminControl.single.edit );
+	app.route( '/admin/single/:model/:id' ).put( reqAdmin, adminControl.single.update );
+	// taxonomy docs
+	app.route( '/admin/taxonomy/:model' ).get( reqAdmin, adminControl.collection.taxonomy );
 
-	/*
-	 * APP PARAMS    ---------------------------------------------
-	 */
-
+	/* ---  APP PARAMS   --- */
 	app.param( 'model', function (req, res, next, model) {
 		var Model = models[model];
 		if (Model === undefined) {
@@ -43,5 +38,5 @@ module.exports.wiretree = function (app, adminControl, models) {
 		return next();
 	});
 
-	return true;
+	wtDone();
 };

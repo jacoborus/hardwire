@@ -1,27 +1,22 @@
 'use strict';
 
-var passport;
+var passport = require('passport');
 
-passport = require('passport');
+module.exports.wiretree = function (app, userControl, wtDone) {
 
-
-module.exports.wiretree = function (app, control) {
-
-	/*
-	 * USER     ----------------------------------------------------------
-	 */
-	app.route('/user/login').get( control.main.login );
-	app.route('/user/logout').get( control.user.logout );
-	app.route('/user/login').post( passport.authenticate( 'local', {
+	app.route( '/user/login' ).get( userControl.login );
+	app.route( '/user/logout' ).get( userControl.logout );
+	app.route( '/user/login' ).post( passport.authenticate( 'local', {
 		failureRedirect: '/user/login',
 		failureFlash: 'Invalid email or password.'
-	}), control.user.session );
+	}), userControl.session );
 
-	app.route('/user/forgot-password').get( control.user.forgotPasswordGet );
-	app.route('/user/forgot-password').post( control.user.forgotPasswordPost );
-	app.route('/user/forgot-error').get( control.user.forgotPasswordError );
-	app.route('/user/restore/:hash').get( control.user.restorePasswordGet );
-	app.route('/user/restore/:hash').post( control.user.restorePasswordPost );
-	app.route('/user/password-restored').get( control.user.restoreSuccess );
-	return true;
+	app.route( '/user/forgot-password' ).get( userControl.forgotPasswordGet );
+	app.route( '/user/forgot-password' ).post( userControl.forgotPasswordPost );
+	app.route( '/user/forgot-error' ).get( userControl.forgotPasswordError );
+	app.route( '/user/restore/:hash' ).get( userControl.restorePasswordGet );
+	app.route( '/user/restore/:hash' ).post( userControl.restorePasswordPost );
+	app.route( '/user/password-restored' ).get( userControl.restoreSuccess );
+
+	wtDone();
 };

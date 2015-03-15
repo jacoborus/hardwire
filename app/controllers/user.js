@@ -5,6 +5,12 @@ exports.wiretree = function (app, config, UserModel, mailerSrv, toolsSrv) {
 		mod = {},
 		uniid = toolsSrv.uniid;
 
+	mod.login =  function (req, res, next) {
+		res.render('user/login', {
+			title: 'Login'
+		});
+	};
+
 	mod.logout = function (req, res) {
 		req.logout();
 		delete req.session.profile;
@@ -37,7 +43,7 @@ exports.wiretree = function (app, config, UserModel, mailerSrv, toolsSrv) {
 
 	mod.forgotPasswordGet =  function (req, res, next) {
 		res.render( 'user/forgot-password', {
-			title: 'Hardwire CMS',
+			title: 'Forgot password - Hardwire CMS',
 			data: {}
 		});
 	};
