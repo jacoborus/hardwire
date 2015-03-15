@@ -70,7 +70,8 @@ exports.wiretree = function (app, models, crudsControl, populateControl) {
 					res.json({
 						ok: true,
 						id: data.id,
-						model: req.Model.modelName
+						model: req.Model.modelName,
+						modelType: 'collection'
 					});
 				});
 			},
@@ -105,7 +106,8 @@ exports.wiretree = function (app, models, crudsControl, populateControl) {
 					res.json({
 						ok: true,
 						id: data.id,
-						model: req.Model.modelName
+						model: req.Model.modelName,
+						modelType: 'collection'
 					});
 				});
 			},
@@ -191,7 +193,8 @@ exports.wiretree = function (app, models, crudsControl, populateControl) {
 					}
 					res.json({
 						ok: true,
-						id: data.id
+						model: model.key,
+						modelType: 'single'
 					});
 				});
 			}
