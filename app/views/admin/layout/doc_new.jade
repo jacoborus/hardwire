@@ -9,5 +9,5 @@ block content
 
 		h1 #{req.modelName}: new item
 
-		form.pure-form(action="/admin/docs/" + req.modelName, method="post", name="mainform", role="form", enctype="multipart/form-data")
+		form.pure-form(action="/admin/collection/" + req.modelName, method="post", name="mainform", role="form", enctype="multipart/form-data")
 			block mainform

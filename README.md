@@ -73,17 +73,17 @@ GET		/user/logout		Login page
 ### Admin API
 ```
 GET		/admin							Admin dashboard
-// docs
-GET		/admin/docs/:model				List/Search documents of model :model
-GET		/admin/docs/:model/new			New doc view
-POST	/admin/docs/:model				Create new doc
-GET		/admin/docs/:model/:id			Read doc
-GET		/admin/docs/:model/:id/edit		Edit doc view
-PUT		/admin/docs/:model/:id			Update doc
-DEL		/admin/docs/:model/:id			Destroy doc
-// keyval
-GET		/admin/keyval/:model/:id/edit	Edit doc view
-PUT		/admin/keyval/:model/:id		Update doc
+// collection docs
+GET		/admin/collection/:model				List/Search documents of model :model
+GET		/admin/collection/:model/new			New doc view
+POST	/admin/collection/:model				Create new doc
+GET		/admin/collection/:model/:id			Read doc
+GET		/admin/collection/:model/:id/edit		Edit doc view
+PUT		/admin/collection/:model/:id			Update doc
+DEL		/admin/collection/:model/:id			Destroy doc
+// single docs
+GET		/admin/single/:model/:id/edit	Edit doc view
+PUT		/admin/single/:model/:id		Update doc
 ```
 
 

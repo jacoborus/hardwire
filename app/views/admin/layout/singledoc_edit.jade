@@ -6,7 +6,7 @@ block topfix
 
 block content
 	section(id='edit_' + req.modelName + '_' + data._id)
-		h1 Edit: #{req.modelName} - #{data._id}
+		h1 Edit: #{req.modelName} - #{data.kvKey}
 
-		form.pure-form(action="/admin/collection/" + req.modelName + "/" + data._id, method="put", name="mainform", role="form", enctype="multipart/form-data")
+		form.pure-form(action="/admin/single/" + req.modelName + "/" + data._id, method="put", name="mainform", role="form", enctype="multipart/form-data")
 			block mainform
