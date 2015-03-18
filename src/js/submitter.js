@@ -83,7 +83,7 @@ var pushFields = function (params, data, form) {
 		}
 		named.setAttribute( 'value', data[param[1]] );
 	});
-}
+};
 
 var submitForm = function (form) {
 
@@ -200,6 +200,25 @@ var bindButtons = function (form) {
 	});
 };
 
+// preview for input files
+var linkPreview = function (item) {
+	if (!item.attributes.preview) {
+		return;
+	}
+	console.log(item.getAttribute('preview'));
+	var el = document.getElementById( item.getAttribute('preview') );
+	item.addEventListener( 'change', function (e) {
+		console.log('cambio de foto')
+		var files = e.target.files || e.dataTransfer.files;
+		var reader = new FileReader();
+
+		reader.onload = function (e) {
+			el.src = e.target.result;
+		};
+		reader.readAsDataURL(files[0]);
+	}, false);
+};
+
 // OPTIONS:
 // - uploadPath
 // - callback
@@ -221,6 +240,7 @@ var submitter = function (formName, opts) {
 		i;
 	for (i = 0; i<len; i++) {
 		if (inputs[i].type === 'file' && inputs[i].attributes.submitter && inputs[i].attributes.push) {
+			linkPreview( inputs[i] );
 			uploads.push( inputs[i] );
 		}
 	}
