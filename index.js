@@ -119,6 +119,12 @@ var hardwire = function (dir) {
 			suffix: 'Srv'
 		})
 
+		// File buckets
+		.folder( './app/buckets', {
+			group : 'buckets',
+			suffix: 'Bucket'
+		})
+
 		// Passports
 		.folder( './app/sys/auth', {
 			group : 'auth',
@@ -145,6 +151,7 @@ var hardwire = function (dir) {
 
 	conf = loadConfig( dir );
 	conf.rootPath = dir;
+	conf.buckets = conf.buckets || {};
 	var hwConf = require( conf.rootPath + '/config/default.json');
 	var plugins = getPlugins( hwConf.plugins );
 
@@ -175,6 +182,11 @@ var hardwire = function (dir) {
 	.folder( path.resolve( __dirname, 'app', 'services' ), {
 		group: 'services',
 		suffix: 'Srv'
+	})
+	// File buckets
+	.folder( path.resolve( __dirname, 'app', 'buckets' ), {
+		group : 'buckets',
+		suffix: 'Bucket'
 	})
 	// core auth
 	.folder( path.resolve( __dirname, 'app', 'sys/auth' ), {
@@ -207,6 +219,11 @@ var hardwire = function (dir) {
 						},
 						function (callback){
 							loadFolder( plugins[i], 'services', 'services', 'Srv', function () {
+								callback( null, 'one');
+							});
+						},
+						function (callback){
+							loadFolder( plugins[i], 'buckets', 'buckets', 'Bucket', function () {
 								callback( null, 'one');
 							});
 						},

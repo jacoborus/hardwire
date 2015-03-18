@@ -29,12 +29,10 @@ exports.wiretree = function (config, toolsSrv) {
 
 	var mod = {};
 
-
 	mod.add = function (folder, files, doc, callback) {
 		var fn = addFn( folder, doc );
-		loopObject( fn, files, callback );
+		loopObject( fn, files || {}, callback );
 	};
 
 	return mod;
-
 };

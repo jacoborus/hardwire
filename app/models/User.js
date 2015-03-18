@@ -1,16 +1,11 @@
 'use strict';
 
-exports.wiretree = function (config, mongoose) {
+exports.wiretree = function (mongoose) {
 
 	var crypto = require('crypto'),
-		Schema = mongoose.Schema,
 		authTypes = ['local'];
 
-	/*
-		User Schema -----------------------
-	 */
-	var UserSchema, validatePresenceOf;
-	UserSchema = new Schema({
+	var UserSchema = new mongoose.Schema({
 		email: {
 			type: String,
 			'default': '',
@@ -73,14 +68,15 @@ exports.wiretree = function (config, mongoose) {
 	.set( function (password) {
 		this.salt = this.makeSalt();
 		this.recoverHash = undefined;
-		return this.hashedPassword = this.encryptPassword( password );
+		this.hashedPassword = this.encryptPassword( password );
+		return this.hashedPassword;
 	});
 
 
 	/*
 		Validations -----------------------------------------------------------------
 	 */
-	validatePresenceOf = function (value) {
+	var validatePresenceOf = function (value) {
 		return value && value.length;
 	};
 

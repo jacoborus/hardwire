@@ -4,12 +4,7 @@ var mailer = require('curlymail');
 
 exports.wiretree = function (config, mongoose) {
 
-	var Schema = mongoose.Schema;
-
-	/*
-		Email Schema -----------------------
-	 */
-	var EmailSchema = new Schema({
+	var EmailSchema = new mongoose.Schema({
 		account: {
 			type: String,
 			required: true

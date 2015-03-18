@@ -3,7 +3,6 @@
 var passport = require('passport');
 
 exports.wiretree = function (config, UserModel ) {
-	var User = UserModel;
 
 	// serialize sessions
 	passport.serializeUser( function (user, done) {
@@ -11,11 +10,10 @@ exports.wiretree = function (config, UserModel ) {
 	});
 
 	passport.deserializeUser( function (id, done) {
-		User.findOne({ _id: id }, function (err, user) {
+		UserModel.findOne({ _id: id }, function (err, user) {
 			done( err, user );
 		});
 	});
-
 
 	// use local strategy
 	var LocalStrategy = require('passport-local').Strategy;
@@ -26,7 +24,7 @@ exports.wiretree = function (config, UserModel ) {
 		},
 		function (email, password, done) {
 
-			User.findOne({ email: email }, function (err, user) {
+			UserModel.findOne({ email: email }, function (err, user) {
 
 				if (err) { return done(err); }
 				if (!user || !user.authenticate(password)) {

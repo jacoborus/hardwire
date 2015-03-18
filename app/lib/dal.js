@@ -8,7 +8,7 @@ exports.wiretree = function (mongoose, config, wtDone) {
 				throw new Error(msg);
 			}
 			console.log( 'MongoDB connection ok' );
-			wtDone( true );
+			wtDone();
 		});
 	} else {
 		console.log('no mongoose connection readyState');

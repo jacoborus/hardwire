@@ -16,6 +16,15 @@ var uniid = function () {
 	 s4() + '-' + s4() + s4() + s4();
 };
 
+var unifolder = function () {
+	var s4 = function () {
+		return Math.floor((1 + Math.random()) * 0x10000)
+		.toString(16)
+		.substring(1);
+	};
+	return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
+};
+
 // Very custom async series function with array
 var loopArray = function (fn, arr, callback) {
 	var limit = arr.length - 1,
@@ -61,6 +70,7 @@ var loopObject = function (fn, obj, callback) {
 
 module.exports = {
 	uniid : uniid,
+	unifolder : unifolder,
 	loopArray: loopArray,
 	loopObject: loopObject
 };

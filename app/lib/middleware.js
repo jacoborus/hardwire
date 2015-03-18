@@ -66,7 +66,7 @@ exports.wiretree = function (app, express, config, UserModel, wtDone) {
 	// parse application/json
 	app.use( bodyParser.json() );
 	var tempFolder = path.resolve( rootPath, config.tempFolder );
-	app.use( multer({ dest: tempFolder }));
+	//app.use( multer( ));
 	app.use( methodOverride( ));
 
 	/*

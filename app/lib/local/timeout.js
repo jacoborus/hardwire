@@ -1,7 +1,8 @@
+'use strict';
 // from http://stackoverflow.com/a/10741832
 var options = {};
-const DEFAULT_TIMEOUT = 10000;
-const DEFAULT_UPLOAD_TIMEOUT = 1 * 60 * 1000;
+var DEFAULT_TIMEOUT = 10000;
+var DEFAULT_UPLOAD_TIMEOUT = 1 * 60 * 1000;
 
 /*
 Throws an error after the specified request timeout elapses.
@@ -18,15 +19,15 @@ var timer = function (req, res, next) {
 	var tid, timeout = req.is( 'multipart/form-data' ) ? options.uploadTimeout : options.timeout;
 	//Add setTimeout and clearTimeout functions
 	req.setTimeout = function (newTimeout) {
-		if (newTimeout != null) {
+		if (newTimeout !== null) {
 			timeout = newTimeout; //Reset the timeout for this request
 		}
 		req.clearTimeout();
 		tid = setTimeout( function () {
 			if (options.throwError && !res.finished) {
 				//throw the error
-				var proto = Error;
-				next( new proto( "Timeout " + req.method + " " + req.url ));
+				var Proto = Error;
+				next( new Proto( 'Timeout ' + req.method + ' ' + req.url ));
 			}
 		}, timeout );
 	};
@@ -45,7 +46,7 @@ var timer = function (req, res, next) {
 		req.clearTimeout();
 		res.end = oldEnd;
 		return res.end.apply( res, arguments );
-	}
+	};
 
 	//start the timer
 	req.setTimeout();
@@ -56,13 +57,11 @@ var timer = function (req, res, next) {
 
 module.exports = function (config) {
 
-	if (!config) {
-		var config = {};
-	}
+	config = config || {};
 	// Set options
 
 	options.timeout = config.timeout || DEFAULT_TIMEOUT;
 	options.uploadTimeout = config.uploadTimeout || DEFAULT_UPLOAD_TIMEOUT;
 
 	return timer;
-}
+};

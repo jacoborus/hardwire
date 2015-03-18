@@ -37,31 +37,28 @@ nanobar = new Nanobar({
 });
 
 options = {
-	init: function () {},
-	finish: function () {
-		nanobar.go(100);
-	},
 	progress: function (p) {
 		nanobar.go(p);
 	},
-	fail: function () {
+	callback: function (err, data) {
+		if (err) {
+			nanobar.go(100);
+			return alert('Error uploading data');
+		}
 		nanobar.go(100);
-		alert('Ups! error transfiriendo datos');
-	},
-	success: function (data) {
-		data = JSON.parse( data );
 		console.log(data);
 		nanobar.go(100);
 		if (data.ok) {
 			if (data.modelType === 'collection') {
-				window.location.assign("/admin/collection/" + data.model + "/" + data.id)
+				window.location.assign('/admin/collection/' + data.model + '/' + data.id);
 			} else {
-				window.location.assign("/admin/single/" + data.model )
+				window.location.assign('/admin/single/' + data.model );
 			}
 		} else {
 			alert('Error with form');
 		}
-	}
+	},
+	uploadPath: '/_upload'
 };
 if (document.querySelector( 'form[name="mainform"]' ) !== null) {
 	submitter('mainform', options);

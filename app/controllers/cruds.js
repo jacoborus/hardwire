@@ -1,6 +1,5 @@
 'use strict';
 
-var fs= require('fs');
 var cleanQuery = function (query) {
 	var prop, val;
 	for (prop in query) {
@@ -17,25 +16,14 @@ exports.wiretree = function (models, fmSrv, relateControl) {
 	var mod = {},
 		relate = relateControl;
 
-	mod.create = function (modelName, body,	files, callback) {
-
+	mod.create = function (modelName, body,	callback) {
 		var doc = new models[ modelName ]( body );
 
-		doc.validate( function (errValidate) {
-			if (errValidate) {
-				return callback( errValidate );
+		doc.save( function (err, data) {
+			if (err) {
+				return callback( err );
 			}
-			fmSrv.add( modelName, files, doc, function (errStore) {
-				if (errStore) {
-					return callback( errStore );
-				}
-				doc.save( function (err, data) {
-					if (err) {
-						return callback( err );
-					}
-					callback( null, data );
-				});
-			});
+			callback( null, data );
 		});
 	};
 
@@ -68,27 +56,17 @@ exports.wiretree = function (models, fmSrv, relateControl) {
 		});
 	};
 
-	mod.update = function (id, modelName, body,	files, callback) {
+	mod.update = function (id, modelName, body,	callback) {
 		models[ modelName ].findById( id, function (err, doc) {
 			var i;
 			for (i in body) {
 				doc[i] = body[i];
 			}
-			doc.validate( function (errValidate) {
-				if (errValidate) {
-					return callback( errValidate );
+			doc.save( function (err, data) {
+				if (err) {
+					return callback( err );
 				}
-				fmSrv.add( modelName, files, doc, function (errStore) {
-					if ( errStore ) {
-						return callback( errStore );
-					}
-					doc.save( function (err, data) {
-						if (err) {
-							return callback( err );
-						}
-						callback( null, data );
-					});
-				});
+				callback( null, data );
 			});
 		});
 	};

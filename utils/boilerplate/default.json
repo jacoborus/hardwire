@@ -12,7 +12,8 @@
     "plugins": [],
     "port":3000,
     "publicFolders" : {
-        "/components" : "/bower_components"
+        "/components" : "/bower_components",
+        "/_uploads": "/uploads"
     },
     "request_timeout":1000,
     "session":{

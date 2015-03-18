@@ -35,7 +35,7 @@ npm install --save hardwire
 # generate boilerplate
 npm run hw-boilerplate
 
-# open hw-conf.json and add your MongoDB settings
+# open config/defualt.json and add your MongoDB settings
 # and then initialize database
 npm run hw-initdb
 ```
