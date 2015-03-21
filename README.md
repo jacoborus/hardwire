@@ -1,9 +1,9 @@
 Hardwire
 ========
 
-**IN EARLY DEVELOPMENT. NOT READY FOR PRODUCTION**
+**Work in progress**
 
-Scalable CMS framework for node.js.
+Dynamic website generator
 
 Built on top of:
 
@@ -11,52 +11,178 @@ Built on top of:
 - Mongoose + node-validator - DB, ORM and validation
 - Wiretree - Framework dependency injection and app structure
 - Passport - Multiservice auth
-- curlymail - SMTP mailer and mail template engine
 - Jade - Template engine
-- ¿?¿? - Handle errors and logs
+- deep.json - config loader
+- curlymail - SMTP mailer and mail template engine with mustaches support
 - miniruler - Roles, levels and permissions
-- node-filesaver + ¿?¿? - Files manager with collections
+- node-cron - cronjobs
+- ¿?¿? - Handle errors and logs
 
 
 
 Requirements
 ------------
 
-Node.js and a MongoDB instance
+Node.js and MongoDB
 
-Installation
-------------
+
+
+Quick start
+-----------
+
+
+### Install
+
+Initialize a npm proyect and install **Hardwire** as dependency (it requires a package.json):
 
 ```sh
 mkdir myapp && cd myapp
-npm init  # hardwire requires a package.json
+npm init
 npm install --save hardwire
+```
 
-# generate boilerplate
+### Boilerplate
+
+**Hardwire** postinstall script add 2 scripts to your `package.json`: `hw-boilerplate` and `hw-initdb`, run the first one in order to generate your app structure folder (/app) and a launcher (app.js)
+
+```
 npm run hw-boilerplate
-
-# open config/defualt.json and add your MongoDB settings
-# and then initialize database
-npm run hw-initdb
 ```
 
 
-Run
----
+### Database
+
+You must configure your database connection before run your app. Open `/app/config/default.json` and add your credentials into `mondgodb` section.
+
+Then create a user in DB:
+
+```
+npm run hw-initdb
+```
+
+email: admin@admin.com
+password: admin
+
+
+### Start app
+
+Run your app:
 
 ```
 npm start
 ```
 
+Index URL: http://localhost:3000
+Admin URL: http://localhost:3000/admin
 
-Folder structure app
---------------------
 
+
+App structure
+-------------
+
+**Hardwire** is structured in blocks, and block are composed by public files, views and/or plugins.
+
+
+### Blocks
+
+Blocks folder structure:
+
+- config
 - controllers
+- lib
 - models
-- routes
-- views
 - public
+- routes
+- services
+- views
+
+
+### Plugins
+
+See [wiretree.jacoborus.codes](http://wiretree.jacoborus.codes)
+
+
+### Configurations
+
+Configuration is exposed in tree as `config`.
+Their files are stored in `/config`.
+[deep.json](http://deepjson.jacoborus.codes) loads coonfig files
+
+
+### Public files
+
+Public files are stored in `/public` folder in blocks, and by default available through HTTP under `/_public` URLs. Hardwire creates also 3 folders in public folder: `js`, `css` and `img`
+
+
+### Views
+
+Views are not exposed in tree.
+Their files are stored in `/views`
+Views use jade template engine
+
+
+### Routers
+
+Routes are not exposed in tree.
+Their files are stored in `/routes`
+
+
+### Controllers
+
+Controller files are stored in `/controllers`
+Exposed in group `control` with its file name as keyname, and under tree root with suffix *Ctrl*
+
+
+### Models
+
+Hardwire uses Mongoose models.
+Stored in `/models` folder
+Exposed in group `models` with its file name as keyname, and under tree root with suffix *Model*
+
+3 types of models:
+
+#### Collections
+
+Collections are pure Mongoose models with its entirely API.
+Stored in `/models/collections`
+
+#### Subcollections
+
+Subcollections are collections stored into a single document.
+Subcollections belongs to `_keyval` collection
+Subcollection document schemas are stored in `/models/subcollections`
+
+#### Singles
+
+Singles are models that contain a single document.
+Simplified API: `read` and `update`
+Single document models are stored in `/models/singles`
+
+
+### Libraries
+
+Libraries are not exposed in tree.
+Their files are stored in `/lib`
+
+### Services
+
+Service plugins are stored in `/services`
+Exposed in group `services` with its file name as keyname, and under tree root with suffix *Srv*
+
+Core services:
+
+#### mailer
+
+See [Curlymail](http://curlymail.jacoborus.codes)
+
+#### ruler
+See [miniruler](https://github.com/jacoborus/miniruler)
+
+### log
+Logger (¿?¿?¿?¿?)
+
+### fm
+File manager.
 
 
 Routing

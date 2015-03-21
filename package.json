@@ -1,7 +1,7 @@
 {
   "name": "hardwire",
-  "version": "0.5.1",
-  "description": "CMS framework",
+  "version": "0.5.2",
+  "description": "Dynamic website generator. Work in progress",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
