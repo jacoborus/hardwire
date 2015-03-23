@@ -1,6 +1,6 @@
 {
   "name": "hardwire",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Dynamic website generator. Work in progress",
   "main": "index.js",
   "scripts": {
@@ -50,7 +50,7 @@
     "safename": "^1.0.0",
     "static-favicon": "^1.0.2",
     "winston": "^0.9.0",
-    "wiretree": "^1.0.1"
+    "wiretree": "^1.2.1"
   },
   "author": "Jacobo Tabernero - github.com/jacoborus <jacobo@xarope.eu>",
   "license": "MIT"

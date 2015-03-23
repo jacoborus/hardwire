@@ -29,6 +29,9 @@ exports.wiretree = function (config, mongoose) {
 		mailer.addAccount( doc.account, doc );
 	});
 
-	return mongoose.model('Email', EmailSchema);
+	return EmailSchema;
 };
 
+exports.settings = {
+	modelName: 'Email'
+};

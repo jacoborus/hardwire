@@ -76,6 +76,13 @@ var getPlugins = function (plugNames) {
 };
 
 
+var processCollection = function (val, settings) {
+	return mongoose.model( settings.modelName, val, settings.collection );
+};
+
+var processSingle = function (val, settings) {
+	return new SingleDocSrv( settings.modelName, val, settings.collection || keyval );
+};
 
 // Create framework
 var hardwire = function (dir) {
@@ -83,13 +90,14 @@ var hardwire = function (dir) {
 	var tree = new Wiretree( dir ),
 		conf;
 
-	var loadFolder = function (plugPath, folder, group, suffix, cb) {
+	var loadFolder = function (plugPath, folder, group, suffix, processing, cb) {
 		folder = plugPath + '/' + folder;
 		fs.exists( folder, function (exists) {
 			if (exists && fs.lstatSync( folder ).isDirectory()) {
 				tree.folder( folder, {
 					group : group,
-					suffix: suffix
+					suffix: suffix,
+					processing: processing
 				}).then( cb );
 			} else {
 				cb();
@@ -98,13 +106,22 @@ var hardwire = function (dir) {
 	};
 
 
-
 	var loadApp = function () {
 		/* - LOAD APP - */
 		// Models
 		tree.folder( './app/models', {
 			group : 'models',
 			suffix: 'Model'
+		})
+		.folder( './app/models/collections', {
+			group : 'models',
+			suffix: 'Model',
+			processing: processCollection
+		})
+		.folder( './app/models/singles', {
+			group : 'models',
+			suffix: 'Model',
+			processing: processSingle
 		})
 
 		// Controllers
@@ -172,6 +189,17 @@ var hardwire = function (dir) {
 		group : 'models',
 		suffix: 'Model'
 	})
+	.folder( path.resolve( __dirname, 'app/models/collections' ), {
+		group : 'models',
+		suffix: 'Model',
+		processing: processCollection
+	})
+	.folder( path.resolve( __dirname, 'app/models/singles' ), {
+		group : 'models',
+		suffix: 'Model',
+		processing: processSingle
+	})
+
 	// core controllers
 	.folder( path.resolve( __dirname, 'app', 'controllers' ), {
 		group: 'control',
@@ -208,32 +236,42 @@ var hardwire = function (dir) {
 				async.parallel(
 					[
 						function (callback){
-							loadFolder( plugins[i], 'models', 'models', 'Model', function () {
+							loadFolder( plugins[i], 'models', 'models', 'Model', null, function () {
 								callback( null, 'one');
 							});
 						},
 						function (callback){
-							loadFolder( plugins[i], 'controllers', 'control', 'Control', function () {
+							loadFolder( plugins[i], 'models/collections', 'models', 'Model', processCollection, function () {
 								callback( null, 'one');
 							});
 						},
 						function (callback){
-							loadFolder( plugins[i], 'services', 'services', 'Srv', function () {
+							loadFolder( plugins[i], 'models/singles', 'models', 'Model', processSingle, function () {
 								callback( null, 'one');
 							});
 						},
 						function (callback){
-							loadFolder( plugins[i], 'buckets', 'buckets', 'Bucket', function () {
+							loadFolder( plugins[i], 'controllers', 'control', 'Control', null, function () {
 								callback( null, 'one');
 							});
 						},
 						function (callback){
-							loadFolder( plugins[i], 'sys/auth', 'auth', 'Auth', function () {
+							loadFolder( plugins[i], 'services', 'services', 'Srv', null, function () {
 								callback( null, 'one');
 							});
 						},
 						function (callback){
-							loadFolder( plugins[i], 'routes', 'router', 'Router', function () {
+							loadFolder( plugins[i], 'buckets', 'buckets', 'Bucket', null, function () {
+								callback( null, 'one');
+							});
+						},
+						function (callback){
+							loadFolder( plugins[i], 'sys/auth', 'auth', 'Auth', null, function () {
+								callback( null, 'one');
+							});
+						},
+						function (callback){
+							loadFolder( plugins[i], 'routes', 'router', 'Router', null, function () {
 								callback( null, 'one');
 							});
 						}
