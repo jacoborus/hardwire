@@ -1,7 +1,7 @@
 'use strict';
 
 var path = require('path'),
-	favicon = require('static-favicon'),
+	favicon = require('serve-favicon'),
 	logger = require('morgan'),
 	cookieParser = require('cookie-parser'),
 	errorHandler = require('errorhandler'),
@@ -26,7 +26,10 @@ exports.wiretree = function (app, express, config, UserModel, wtDone) {
 	app.set('showStackError', true);
 
 	app.use( flash() );
-	app.use( favicon() );
+	if (config.favicon) {
+		app.use( favicon( config.favicon ) );
+	}
+
 	if (process.env.NODE_ENV !== 'production') {
 		app.use( logger( 'dev' ));
 	}
