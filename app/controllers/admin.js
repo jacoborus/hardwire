@@ -60,8 +60,6 @@ exports.wiretree = function (app, models, crudsControl, populateControl) {
 			},
 
 			create: function (req, res, next) {
-						console.log('body')
-		console.log(req.body)
 				cruds.create( req.Model.modelName, req.body, function (err, data) {
 					if (err) {
 						console.log( err );
@@ -87,7 +85,7 @@ exports.wiretree = function (app, models, crudsControl, populateControl) {
 						return res.sendStatus( 500 );
 					}
 					if (data === null) {
-						return res.send( 404 );
+						return res.sendStatus( 404 );
 					}
 					res.render( 'admin/collection/' + modelName + '/show', {
 						title: 'Doc : ' + data.id,
@@ -144,10 +142,10 @@ exports.wiretree = function (app, models, crudsControl, populateControl) {
 				cruds.read( modelName, req.params.id, {population: po}, function (err, data) {
 					if (err) {
 						console.log( err );
-						return res.send( 500 );
+						return res.sendStatus( 500 );
 					}
 					if (data === null) {
-						return res.send( 404 );
+						return res.sendStatus( 404 );
 					}
 					res.render('admin/collection/' + modelName + '/edit', {
 						title: 'Edit ' + modelName + ' ' + req.params.id,
@@ -175,7 +173,7 @@ exports.wiretree = function (app, models, crudsControl, populateControl) {
 				model.read( function (err, data) {
 					if (err) {
 						console.log( err );
-						return res.send( 500 );
+						return res.sendStatus( 500 );
 					}
 					res.render( 'admin/single/' + model.key, {
 						title: 'Edit ' + model.key,

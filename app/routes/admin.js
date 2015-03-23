@@ -31,7 +31,7 @@ module.exports.wiretree = function (app, adminControl, models, wtDone) {
 		var Model = models[model];
 		if (Model === undefined) {
 			console.log( 'Error: undefined model' );
-			return res.send(404);
+			return res.sendStatus(404);
 		}
 		req.Model = Model;
 		req.modelName = model;

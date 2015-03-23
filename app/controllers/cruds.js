@@ -11,7 +11,7 @@ var cleanQuery = function (query) {
 	return query;
 };
 
-exports.wiretree = function (models, fmSrv, relateControl) {
+exports.wiretree = function (models, relateControl) {
 
 	var mod = {},
 		relate = relateControl;

@@ -143,7 +143,7 @@ Exposed in group `models` with its file name as keyname, and under tree root wit
 
 Collections are pure Mongoose models with its entirely API, and their files are stored in `/models/collections`
 
-#### Subcollections
+#### Subcollections (not implemented yet)
 
 Subcollections are collections stored into a single document into `_keyval` collection.
 
