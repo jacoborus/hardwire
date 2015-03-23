@@ -11,10 +11,10 @@ var cleanQuery = function (query) {
 	return query;
 };
 
-exports.wiretree = function (models, relateControl) {
+exports.wiretree = function (models, relateSrv) {
 
 	var mod = {},
-		relate = relateControl;
+		relate = relateSrv;
 
 	mod.create = function (modelName, body,	callback) {
 		var doc = new models[ modelName ]( body );
