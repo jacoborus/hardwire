@@ -60,8 +60,8 @@ Then create a user in DB:
 npm run hw-initdb
 ```
 
-email: admin@admin.com
-password: admin
+- email: admin@admin.com
+- password: admin
 
 
 ### Start app
@@ -72,8 +72,8 @@ Run your app:
 npm start
 ```
 
-Index URL: http://localhost:3000
-Admin URL: http://localhost:3000/admin
+- Index URL: http://localhost:3000
+- Admin URL: http://localhost:3000/admin
 
 
 
@@ -104,9 +104,9 @@ See [wiretree.jacoborus.codes](http://wiretree.jacoborus.codes)
 
 ### Configurations
 
-Configuration is exposed in tree as `config`.
-Their files are stored in `/config`.
-[deep.json](http://deepjson.jacoborus.codes) loads coonfig files
+Configuration is exposed in tree as `config`. Their files are stored in `/config`.
+
+See [deep.json](http://deepjson.jacoborus.codes)
 
 
 ### Public files
@@ -116,58 +116,57 @@ Public files are stored in `/public` folder in blocks, and by default available 
 
 ### Views
 
-Views are not exposed in tree.
-Their files are stored in `/views`
-Views use jade template engine
+Views are not exposed in tree. Their files are stored in `/views`. Views are jade templates
 
 
 ### Routers
 
-Routes are not exposed in tree.
-Their files are stored in `/routes`
+Routes are not exposed in tree and their files are stored in `/routes`
 
 
 ### Controllers
 
-Controller files are stored in `/controllers`
+Controller files are stored in `/controllers`.
+
 Exposed in group `control` with its file name as keyname, and under tree root with suffix *Ctrl*
 
 
 ### Models
 
-Hardwire uses Mongoose models.
-Stored in `/models` folder
-Exposed in group `models` with its file name as keyname, and under tree root with suffix *Model*
+Hardwire uses Mongoose models stored in `/models` folder.
+
+Exposed in group `models` with its file name as keyname, and under tree root with suffix *Model*.
 
 3 types of models:
 
 #### Collections
 
-Collections are pure Mongoose models with its entirely API.
-Stored in `/models/collections`
+Collections are pure Mongoose models with its entirely API, and their files are stored in `/models/collections`
 
 #### Subcollections
 
-Subcollections are collections stored into a single document.
-Subcollections belongs to `_keyval` collection
-Subcollection document schemas are stored in `/models/subcollections`
+Subcollections are collections stored into a single document into `_keyval` collection.
+
+Subcollection document schemas are stored in `/models/subcollections` folder
 
 #### Singles
 
-Singles are models that contain a single document.
+Singles are models that contain a single document and their files are stored in `/models/singles`.
+
 Simplified API: `read` and `update`
-Single document models are stored in `/models/singles`
 
 
 ### Libraries
 
 Libraries are not exposed in tree.
+
 Their files are stored in `/lib`
 
 ### Services
 
-Service plugins are stored in `/services`
-Exposed in group `services` with its file name as keyname, and under tree root with suffix *Srv*
+Service plugins are stored in `/services`.
+
+Exposed in group `services` with its file name as keyname, and under tree root with suffix *Srv*.
 
 Core services:
 
