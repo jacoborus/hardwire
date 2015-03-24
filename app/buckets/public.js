@@ -1,7 +1,7 @@
 'use strict';
 
-exports.wiretree = function (RebucketSrv, config) {
-	return new RebucketSrv({
+exports.wiretree = function (RebucketUtil, config) {
+	return new RebucketUtil({
 		aws: false,
 		safenames: true,
 		path: config.folder + '/uploads'

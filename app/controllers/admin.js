@@ -29,9 +29,9 @@ var limpia = function(query) {
 	return query;
 };
 
-exports.wiretree = function (app, models, crudsControl, populateSrv) {
+exports.wiretree = function (app, models, crudsControl, populateUtil) {
 	var cruds = crudsControl;
-	var popu = populateSrv;
+	var popu = populateUtil;
 	return {
 		index: function (req, res) {
 			return res.render('admin/index', {

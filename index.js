@@ -136,6 +136,12 @@ var hardwire = function (dir) {
 			suffix: 'Srv'
 		})
 
+		// Utilities
+		.folder( './app/utilities', {
+			group : 'utilities',
+			suffix: 'Util'
+		})
+
 		// File buckets
 		.folder( './app/buckets', {
 			group : 'buckets',
@@ -211,6 +217,11 @@ var hardwire = function (dir) {
 		group: 'services',
 		suffix: 'Srv'
 	})
+	// core utilities
+	.folder( path.resolve( __dirname, 'app', 'utilities' ), {
+		group: 'utilities',
+		suffix: 'Util'
+	})
 	// File buckets
 	.folder( path.resolve( __dirname, 'app', 'buckets' ), {
 		group : 'buckets',
@@ -235,42 +246,47 @@ var hardwire = function (dir) {
 			for (i in plugins) {
 				async.parallel(
 					[
-						function (callback){
+						function (callback) {
 							loadFolder( plugins[i], 'models', 'models', 'Model', null, function () {
 								callback( null, 'one');
 							});
 						},
-						function (callback){
+						function (callback) {
 							loadFolder( plugins[i], 'models/collections', 'models', 'Model', processCollection, function () {
 								callback( null, 'one');
 							});
 						},
-						function (callback){
+						function (callback) {
 							loadFolder( plugins[i], 'models/singles', 'models', 'Model', processSingle, function () {
 								callback( null, 'one');
 							});
 						},
-						function (callback){
+						function (callback) {
 							loadFolder( plugins[i], 'controllers', 'control', 'Control', null, function () {
 								callback( null, 'one');
 							});
 						},
-						function (callback){
+						function (callback) {
 							loadFolder( plugins[i], 'services', 'services', 'Srv', null, function () {
 								callback( null, 'one');
 							});
 						},
-						function (callback){
+						function (callback) {
+							loadFolder( plugins[i], 'utilities', 'utilities', 'Util', null, function () {
+								callback( null, 'one');
+							});
+						},
+						function (callback) {
 							loadFolder( plugins[i], 'buckets', 'buckets', 'Bucket', null, function () {
 								callback( null, 'one');
 							});
 						},
-						function (callback){
+						function (callback) {
 							loadFolder( plugins[i], 'sys/auth', 'auth', 'Auth', null, function () {
 								callback( null, 'one');
 							});
 						},
-						function (callback){
+						function (callback) {
 							loadFolder( plugins[i], 'routes', 'router', 'Router', null, function () {
 								callback( null, 'one');
 							});

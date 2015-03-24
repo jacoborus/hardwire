@@ -4,7 +4,7 @@ var Filesaver = require( 'filesaver' ),
 	mkdirp = require('mkdirp'),
 	path = require('path');
 
-exports.wiretree = function (config, toolsSrv) {
+exports.wiretree = function (config, toolsUtil) {
 
 	// create temp folder if not exists
 	mkdirp( path.resolve( config.folder, config.tempFolder ), function (err) {
@@ -13,7 +13,7 @@ exports.wiretree = function (config, toolsSrv) {
 	var filesaver = new Filesaver({ folders: config.uploadFolders, safenames: true });
 
 
-	var loopObject = toolsSrv.loopObject;
+	var loopObject = toolsUtil.loopObject;
 
 	var addFn = function (folder, doc) {
 		return function (file, next) {

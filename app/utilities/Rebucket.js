@@ -3,9 +3,9 @@
 var safename = require('safename'),
 	path = require('path');
 
-exports.wiretree = function (config, toolsSrv, FilewareSrv) {
+exports.wiretree = function (config, toolsUtil, FilewareSrv) {
 
-var uniid = toolsSrv.unifolder;
+var uniid = toolsUtil.unifolder;
 //var aws = require('aws-sdk');
 
 

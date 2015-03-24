@@ -16,6 +16,12 @@ var uniid = function () {
 	 s4() + '-' + s4() + s4() + s4();
 };
 
+/**
+ * Unique folder id (AWS S3 commpatible)
+ * Return unique IDs
+ * @return {String} unique hash
+ * @api public
+ */
 var unifolder = function () {
 	var s4 = function () {
 		return Math.floor((1 + Math.random()) * 0x10000)
@@ -31,14 +37,11 @@ var loopArray = function (fn, arr, callback) {
 		cur = 0; // pointer
 
 	var iterate = function (err) {
-		if (err) {
-			return callback( err );
-		}
+		if (err) { return callback( err );}
 		if (cur === limit) {
 			return callback();
 		}
-		cur++;
-		fn( arr[cur], iterate );
+		fn( arr[++cur], iterate );
 	};
 };
 
@@ -55,14 +58,11 @@ var loopObject = function (fn, obj, callback) {
 	}
 
 	var iterate = function (err) {
-		if (err) {
-			return callback( err );
-		}
+		if (err) { return callback( err );}
 		if (cur === limit) {
 			return callback();
 		}
-		fn( obj[arr[cur]], iterate );
-		cur++;
+		fn( obj[arr[cur++]], iterate );
 	};
 
 	iterate();

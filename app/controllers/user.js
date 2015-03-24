@@ -1,9 +1,9 @@
 'use strict';
 
-exports.wiretree = function (app, config, UserModel, mailerSrv, toolsSrv) {
+exports.wiretree = function (app, config, UserModel, mailerSrv, toolsUtil) {
 	var User = UserModel,
 		mod = {},
-		uniid = toolsSrv.uniid;
+		uniid = toolsUtil.uniid;
 
 	mod.login =  function (req, res, next) {
 		res.render('user/login', {
