@@ -11,6 +11,7 @@ var express = require('express'),
 	builder = require( './utils/builder.js' ),
 	fs = require( 'fs' ),
 	async = require('async'),
+	SingleDoc = require( __dirname + '/app/utilities/SingleDoc.js'),
 	http, https;
 
 var objLength = function (obj) {
@@ -21,10 +22,6 @@ var objLength = function (obj) {
 		count++;
 	}
 	return count;
-};
-
-var newObjLength = function (obj) {
-	return Object.keys( obj ).length;
 };
 
 // get an array with /node_module folder paths
@@ -81,7 +78,7 @@ var processCollection = function (val, settings) {
 };
 
 var processSingle = function (val, settings) {
-	return new SingleDocSrv( settings.modelName, val, settings.collection || keyval );
+	return new SingleDoc( settings.modelName, val );
 };
 
 // Create framework
