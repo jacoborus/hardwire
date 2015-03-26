@@ -12,6 +12,7 @@ var express = require('express'),
 	fs = require( 'fs' ),
 	async = require('async'),
 	SingleDoc = require( __dirname + '/app/utilities/SingleDoc.js'),
+	safename = require('safename'),
 	http, https;
 
 var objLength = function (obj) {
@@ -186,6 +187,10 @@ var hardwire = function (dir) {
 	.add( 'mongoose', mongoose )
 	.add( 'app', app )
 	.add( 'express', express )
+	.add( 'safename', safenameUtil, {
+		group: 'utilities',
+		localname: 'safename'
+	})
 	.folder( path.resolve( __dirname, 'app', 'lib' ))
 	// core models
 	.folder( path.resolve( __dirname, 'app', 'models' ), {
