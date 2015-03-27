@@ -187,7 +187,7 @@ var hardwire = function (dir) {
 	.add( 'mongoose', mongoose )
 	.add( 'app', app )
 	.add( 'express', express )
-	.add( 'safename', safenameUtil, {
+	.add( 'safename', safename, {
 		group: 'utilities',
 		localname: 'safename'
 	})

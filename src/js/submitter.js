@@ -11,7 +11,10 @@ var getValues = function (form) {
 	var inputs = form.getElementsByTagName( 'input' ),
 		data = {},
 		len = inputs.length,
+		areas = form.getElementsByTagName( 'textarea' ),
+		areasLength = areas.length,
 		i, x;
+
 	for (i = 0; i<len; i++) {
 		x = inputs[i];
 		if (x.name) {
@@ -40,6 +43,18 @@ var getValues = function (form) {
 					data[x.name] = x.value;
 					break;
 			}
+		}
+	}
+
+	for (i = 0; i<areasLength; i++) {
+		x = areas[i];
+		if (x.name) {
+			if (x.value === '') {break;}
+			if (x.value === ' ') {
+				data[x.name] = '';
+				break;
+			}
+			data[x.name] = x.value;
 		}
 	}
 	return data;
