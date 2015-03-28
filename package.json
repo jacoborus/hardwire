@@ -1,13 +1,13 @@
 {
   "name": "hardwire",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "Dynamic website generator. Work in progress",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "npm run build-js && npm run build-css && npm run boilerplate",
     "build-js": "mkdir -p ./app/public/js && cat ./node_modules/nanobar/nanobar.js ./src/js/submitter.js ./src/js/baseadmin.js ./src/js/sidetool.js ./src/js/posttaxonomy.js > ./app/public/js/hw-baseadmin.js",
-    "build-css": "mkdir -p ./app/public/css && cat ./src/css/pure-css.min.css ./src/css/side-menu.css ./src/css/admin.css >  ./app/public/css/hw-baseadmin.css",
+    "build-css": "mkdir -p ./app/public/css && cat ./src/css/pure-css.min.css ./src/css/side-menu.css ./src/css/sidetool.css ./src/css/admin.css >  ./app/public/css/hw-baseadmin.css",
     "boilerplate": "node ./utils/preconfig.js"
   },
   "keywords": [
