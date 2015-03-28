@@ -85,6 +85,7 @@ var Selector = function (el) {
 	el.parentNode.appendChild( this.input );
 	this.input.setAttribute( 'name', el.getAttribute( 'taxo-name' ));
 
+	// SELECT
 	this.select = function (obj) {
 		el.setAttribute( 'idn', obj.id );
 		self.input.setAttribute( 'value', obj.id );

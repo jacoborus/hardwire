@@ -9,6 +9,9 @@ var FileSchema = new mongoose.Schema({
 	description: String,
 	filetype: String,
 	image: Boolean
+},{
+	toObject: { virtuals: true },
+	toJSON: { virtuals: true }
 });
 
 FileSchema.pre( 'save', function (next) {
@@ -16,6 +19,15 @@ FileSchema.pre( 'save', function (next) {
 		this.image = this.filetype.split('/')[0] === 'image' ? true : false;
 	}
 	next();
+});
+
+FileSchema
+.virtual( '_taxoInfo' )
+.get( function () {
+	return {
+		caption: this.description,
+		helper: this.filetype
+	};
 });
 
 module.exports = {
