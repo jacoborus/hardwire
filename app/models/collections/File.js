@@ -21,20 +21,17 @@ FileSchema.pre( 'save', function (next) {
 	next();
 });
 
-FileSchema
-.virtual( '_taxoInfo' )
-.get( function () {
-	return {
-		caption: this.description,
-		helper: this.filetype
-	};
-});
-
 module.exports = {
 	wiretree : function () {
 		return FileSchema;
 	},
 	settings : {
-		modelName: 'File'
+		modelName: 'File',
+		_taxoInfo: function () {
+			return {
+				caption: this.description,
+				helper: this.filetype
+			};
+		}
 	}
 }

@@ -74,8 +74,13 @@ var getPlugins = function (plugNames) {
 };
 
 
-var processCollection = function (val, settings) {
-	return mongoose.model( settings.modelName, val, settings.collection );
+var processCollection = function (schema, settings) {
+	if (settings._taxoInfo) {
+		schema
+		.virtual( '_taxoInfo' )
+		.get( settings._taxoInfo );
+	}
+	return mongoose.model( settings.modelName, schema, settings.collection );
 };
 
 var processSingle = function (val, settings) {
