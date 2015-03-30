@@ -109,6 +109,7 @@ var serie = function (tree, blockPaths, callback) {
 
 var loadAppProvider = function (dir, blockPaths) {
 	return function () {
+		console.log( 'Loading tree');
 		var tree = new Wiretree( dir ),
 			app = express(),
 			conf = loadConfig( dir + '/output/build/config' );
@@ -130,6 +131,7 @@ var loadAppProvider = function (dir, blockPaths) {
 			serie( tree, blockPaths, function (err) {
 				tree.resolve( function (err) {
 					if (err) { throw err;}
+					console.log( 'Tree loaded');
 					if (!conf.ssl) {
 						http = require('http');
 						http.createServer( app ).listen( conf.port );

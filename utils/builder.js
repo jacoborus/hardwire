@@ -5,24 +5,15 @@
 
 var ncp = require('ncp').ncp,
 	fs = require('fs'),
-	mkdirp = require('mkdirp');
+	mkdirp = require('mkdirp'),
+	exec = require( 'child_process' ).exec;
 
-ncp.limit = 1;
+ncp.limit = 16;
 
 var groupFolders = ['config', 'public', 'views'];
 
-var deleteFolderRecursive = function (path) {
-	if (fs.existsSync(path)) {
-		fs.readdirSync(path).forEach( function (file) {
-			var curPath = path + '/' + file;
-			if (fs.statSync( curPath ).isDirectory()) {
-				return deleteFolderRecursive( curPath );
-			} else {
-				return fs.unlinkSync( curPath );
-			}
-		});
-		return fs.rmdirSync( path );
-	}
+var deleteFolderRecursive = function (path, callback) {
+	exec( 'rm -r ' + path, callback );
 };
 
 var serie = function (arr, fn, callback) {
@@ -31,6 +22,7 @@ var serie = function (arr, fn, callback) {
 
 	var next = function () {
 		if (count === limit) {
+			console.log( 'Build complete');
 			return callback();
 		}
 		fn( arr[count++], next );
@@ -70,16 +62,18 @@ var copyFolder = function (source, destination, callback) {
 
 
 module.exports = function (dir, blockPaths, callback) {
+	console.log( 'Building...');
 	// - copy views, configs and public folders into /output/build
-	deleteFolderRecursive( dir + '/output/build' );
-	mkdirp( dir + '/output/build' );
+	deleteFolderRecursive( dir + '/output/build', function (err) {
+		mkdirp( dir + '/output/build' );
 
-	var copyBlock = function (blockPath, done) {
-		var count = newCounter( groupFolders.length, done );
-		groupFolders.forEach( function (folder) {
-			copyFolder( blockPath + '/' + folder, dir + '/output/build/' + folder, count );
-		});
-	};
+		var copyBlock = function (blockPath, done) {
+			var count = newCounter( groupFolders.length, done );
+			groupFolders.forEach( function (folder) {
+				copyFolder( blockPath + '/' + folder, dir + '/output/build/' + folder, count );
+			});
+		};
 
-	serie( blockPaths, copyBlock, callback );
+		serie( blockPaths, copyBlock, callback );
+	});
 };
