@@ -1,3 +1,3 @@
 'use strict';
 
-module.exports = require('hardwire')( __dirname );
+require('hardwire')( __dirname );

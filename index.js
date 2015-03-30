@@ -91,7 +91,7 @@ var serie = function (tree, blockPaths, callback) {
 	var cursor = 0,
 		limit = blockPaths.length;
 
-	var next = function (self) {
+	var next = function () {
 		if (cursor === limit) {
 			return callback();
 		}
@@ -123,6 +123,7 @@ var loadAppProvider = function (dir, blockPaths) {
 		})
 		.then( function () {
 			serie( tree, blockPaths, function (err) {
+				if (err) { throw err;}
 				tree.resolve( function (err) {
 					if (err) { throw err;}
 					console.log( 'Tree loaded');
