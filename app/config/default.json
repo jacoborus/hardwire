@@ -17,7 +17,6 @@
     "publicFolders" : {
         "/_uploads": "/uploads"
     },
-    "plugins": [],
     "tempFolder" : "output/temp",
     "buildFolder" : "output/build",
     "uploadFolders" : {}

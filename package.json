@@ -1,6 +1,6 @@
 {
   "name": "hardwire",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Dynamic website generator. Work in progress",
   "main": "index.js",
   "scripts": {

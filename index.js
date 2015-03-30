@@ -79,12 +79,6 @@ var loadBlock = function (tree, blockPath, next) {
 		suffix: 'Bucket'
 	})
 
-	// Passports
-	.folder( blockPath + '/sys/auth', {
-		group : 'auth',
-		suffix: 'Auth'
-	})
-
 	// Routes
 	.folder( blockPath + '/routes', {
 		group: 'router',
