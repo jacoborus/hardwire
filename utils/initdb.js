@@ -8,14 +8,14 @@ password: admin
 var fs = require('fs'),
 	path = require('path'),
 	crypto = require('crypto'),
-	configPath = path.resolve('./config/default.json'),
+	configPath = path.resolve('./app/config/default.json'),
 	mongoose = require( 'mongoose' ),
 	config;
 
 if (fs.existsSync( configPath )) {
 	config = require( configPath );
 } else {
-	console.log( 'Can\'t find hw-conf.json' );
+	console.log( 'Can\'t find donfiguration file' );
 	process.exit(1);
 }
 
@@ -80,7 +80,7 @@ var creadmin = function() {
 };
 
 if (mongoose.connection.readyState !== null) {
-	mongoose.connect(config.mongodb.uri, function(err) {
+	mongoose.connect( config.mongodb.uri, function (err) {
 		var msg;
 		if (err) {
 			msg = 'Failed to connect to mongodb instance at ' + config.mongodb.uri + '. Please confirm database instance is running.';
@@ -90,5 +90,5 @@ if (mongoose.connection.readyState !== null) {
 		}
 	});
 } else {
-	console.log('no mongoose connection readyState');
+	console.log( 'no mongoose connection readyState' );
 }

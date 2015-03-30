@@ -48,9 +48,9 @@ exports.wiretree = function (app, express, config, UserModel, wtDone) {
 	}));
 
 	// set views folder
-	app.set( 'views', path.resolve( config.folder, 'build/views' ));
-	app.use( '/uploads', express.static( path.resolve( config.folder, 'datapack/uploads' )));
-	app.use(express.static( path.resolve( config.folder, 'build/public')));
+	app.set( 'views', path.resolve( config.rootPath, 'output/build/views' ));
+	//app.use( '/_uploads', express.static( path.resolve( config.rootPath, 'uploads' )));
+	app.use(express.static( path.resolve( config.rootPath, 'output/build/public')));
 
 	// add public folders from config
 	var folder;

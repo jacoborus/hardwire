@@ -4,6 +4,6 @@ exports.wiretree = function (RebucketUtil, config) {
 	return new RebucketUtil({
 		aws: false,
 		safenames: true,
-		path: config.folder + '/uploads'
+		path: config.rootPath + '/uploads'
 	});
 };

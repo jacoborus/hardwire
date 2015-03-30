@@ -1,4 +1,4 @@
 node_modules
-datapack
+output
 npm-debug.log
-build
+.env

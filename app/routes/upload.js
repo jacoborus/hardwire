@@ -6,7 +6,7 @@ var multer  = require('multer'),
 
 
 exports.wiretree = function (app, config, uploadControl, publicBucket, wtDone) {
-	var tempFolder = path.resolve( config.folder, config.tempFolder );
+	var tempFolder = path.resolve( config.rootPath, config.tempFolder );
 	var mwMulter1 = multer({ dest: tempFolder });
 
 	var checkCredential = function (req, res, next) {

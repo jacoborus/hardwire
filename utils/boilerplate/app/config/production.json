@@ -1,5 +1,4 @@
 {
     "globalUrl" : "https://localhost:4300",
-    "plugins": [],
     "port":4300
 }

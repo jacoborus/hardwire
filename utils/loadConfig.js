@@ -1,20 +1,28 @@
 'use strict';
 
-var path = require('path'),
-	deepjson = require('deepjson');
+var deepjson = require('deepjson');
 
 module.exports = function (dir) {
 	var env = process.env.NODE_ENV || 'default',
-		configDir = path.resolve( dir, 'config'),
+		coreCfg = require( __dirname + '/../app/config/default.json' ),
 		config;
 
 	if (env === 'default') {
-		config = deepjson( configDir + '/default' );
+		config = deepjson( coreCfg, dir + '/default' );
 	} else {
-		config = deepjson( configDir + '/default', configDir + '/' + env );
+		config = deepjson( coreCfg, dir + '/default', dir + '/' + env );
 	}
 
-	config.folder = path.resolve( dir );
+	config.folder = dir;
+	if (process.env.MONGODB_URI) {
+		config.mongodb.uri = process.env.MONGODB_URI;
+	}
+	if (process.env.MONGODB_USER) {
+		config.mongodb.user = process.env.MONGODB_USER;
+	}
+	if (process.env.MONGODB_PASS) {
+		config.mongodb.pass = process.env.MONGODB_PASS;
+	}
 
 	return config;
 };

@@ -13,7 +13,7 @@ Usage:
 
 exports.wiretree = function (config) {
 
-	var logPath = path.resolve( config.folder , config.logPath );
+	var logPath = path.resolve( config.rootPath , config.logPath );
 
 	// create logPath if not exists
 	fs.exists( logPath, function (exists) {

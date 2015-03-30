@@ -7,7 +7,7 @@ var Filesaver = require( 'filesaver' ),
 exports.wiretree = function (config, toolsUtil) {
 
 	// create temp folder if not exists
-	mkdirp( path.resolve( config.folder, config.tempFolder ), function (err) {
+	mkdirp( path.resolve( config.rootPath, config.tempFolder ), function (err) {
 		if (err) { throw( err ); }
 	});
 	var filesaver = new Filesaver({ folders: config.uploadFolders, safenames: true });

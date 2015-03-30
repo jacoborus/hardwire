@@ -5,26 +5,11 @@
 
 var ncp = require('ncp').ncp,
 	fs = require('fs'),
-	path = require('path'),
-	mkdirp = require('mkdirp'),
-	hwFolder = path.resolve( __dirname, '..');
+	mkdirp = require('mkdirp');
 
 ncp.limit = 1;
 
-var loop = function (arr, fn, cb) {
-	var count = 0,
-		limit = arr.length;
-
-	var next = function (self) {
-		if (count === limit) {
-			return cb();
-		}
-		fn( arr[count++], self );
-	};
-
-	next( next );
-};
-
+var groupFolders = ['config', 'public', 'views'];
 
 var deleteFolderRecursive = function (path) {
 	if (fs.existsSync(path)) {
@@ -40,50 +25,61 @@ var deleteFolderRecursive = function (path) {
 	}
 };
 
-var getCopy = function (dir) {
-	return function (ori, next) {
-		var viewsOrigin = path.resolve( dir, 'plugins', ori, 'views' ),
-			publicOrigin = path.resolve( dir, 'plugins', ori, 'public' );
+var serie = function (arr, fn, callback) {
+	var count = 0,
+		limit = arr.length;
 
-		ncp( viewsOrigin, dir + '/build/views', function () {
-			ncp( publicOrigin, dir + '/build/public', function () {
-				next( next );
-			});
-		});
+	var next = function () {
+		if (count === limit) {
+			return callback();
+		}
+		fn( arr[count++], next );
+	};
+
+	next();
+};
+
+
+
+var newCounter = function (limit, callback) {
+	var cursor = 0,
+		errors = [];
+
+	return function (err) {
+		if (err) {
+			errors.push( err );
+		}
+		if (++cursor === limit) {
+			if (errors.legth) {
+				return callback( errors );
+			}
+			callback( callback );
+		}
 	};
 };
 
 
-module.exports = function (plugins, dir) {
-	var paths = [],
-		copy = getCopy( dir ),
-		viewsOrigin = path.resolve( hwFolder, 'app', 'views' ),
-		publicOrigin = path.resolve( hwFolder, 'app', 'public' ),
-		p;
-
-	// - copy views and plublic folders from plugins
-	deleteFolderRecursive( dir + '/build' );
-	mkdirp( dir + '/build' );
-
-	ncp( viewsOrigin, dir + '/build/views', function () {
-		ncp( publicOrigin, dir + '/build/public', function () {
-			if (plugins.length) {
-				for (p in plugins) {
-					paths.push( plugins[p] );
-				}
-				loop( paths, copy, function () {
-					// - copy views and plublic folders from app
-					copy( dir + '/app', function () {
-						console.log( 'app views copied' );
-					});
-				});
-			} else {
-				// - copy views and plublic folders from app
-				copy( dir + '/app', function () {
-					console.log( 'app views copied' );
-				});
-			}
-		});
+var copyFolder = function (source, destination, callback) {
+	ncp( source, destination, function (err) {
+		if (err) {
+			return callback( err );
+		}
+		callback();
 	});
+};
 
+
+module.exports = function (dir, blockPaths, callback) {
+	// - copy views, configs and public folders into /output/build
+	deleteFolderRecursive( dir + '/output/build' );
+	mkdirp( dir + '/output/build' );
+
+	var copyBlock = function (blockPath, done) {
+		var count = newCounter( groupFolders.length, done );
+		groupFolders.forEach( function (folder) {
+			copyFolder( blockPath + '/' + folder, dir + '/output/build/' + folder, count );
+		});
+	};
+
+	serie( blockPaths, copyBlock, callback );
 };
