@@ -17,8 +17,8 @@ block mainform
 		label Timeout
 		input(type="text", name="timeout", value=data.timeout)
 		label(for="ssl", class="pure-checkbox")
-			input(id="ssl", name="ssl", type="checkbox")
+			input(id="ssl", name="ssl", type="checkbox", checked=data.ssl)
 			| SSL
 		label(for="tls", class="pure-checkbox")
-			input(id="tls", name="tls", type="checkbox")
+			input(id="tls", name="tls", type="checkbox", checked=data.tls)
 			| TLS
