@@ -1,0 +1,24 @@
+#!/usr/bin/env node
+
+'use strict';
+var path = require('path'),
+	ncp = require('ncp').ncp,
+	fs = require('fs');
+
+ncp.limit = 16;
+
+var sourcePath = path.resolve( __dirname, '../../jetkit/boilerplate' ),
+	destPath = path.resolve( '.' );
+console.log( sourcePath);
+console.log( destPath);
+
+ncp( sourcePath, destPath, function (err) {
+	if (err) { throw err;}
+	if (fs.existsSync( destPath + '/_gitignore' )) {
+		fs.rename( destPath + '/_gitignore', destPath + '/.gitignore', function (err) {
+			if (err) { throw err;}
+		});
+	}
+	console.log( 'Boilerplate installed' );
+});
+

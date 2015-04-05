@@ -1,166 +1,182 @@
 'use strict';
+/*
+- add npm scripts
+- set build folders
+- set build middleware
+- set loader middleware
+- set config middleware
+- set core block
+- set custom block
+- set block params in package.json
+- generate boilerplate
+- set core config
 
-// module dependencies
-var express = require('express'),
-	pkg = require('./package.json'),
-	Wiretree = require('wiretree'),
-	mongoose = require('mongoose'),
-	loadConfig = require('./utils/loadConfig.js'),
-	getBlockPaths = require('./utils/block_paths.js'),
-	builder = require( './utils/builder.js' ),
-	fs = require( 'fs' ),
-	SingleDoc = require( __dirname + '/app/utilities/SingleDoc.js'),
-	safename = require('safename'),
+Block folders
+- core block
+- blocks from node_modules
+- blocks from custom block `blocks` folder
+- custom block
+ */
+
+
+var Wiretree = require('wiretree'),
+	getBlockPaths = require('./lib/paths.js'),
+	getConfig = require('./lib/getConfig.js'),
+	builder = require('./lib/builder.js'),
 	path = require('path'),
-	http, https;
+	fs = require('fs');
 
-var resolvePaths = function (paths, dir, config) {
-	paths.forEach( function (p) {
-		config[p] = path.resolve( dir, config[p] );
-	});
-};
 
-var processCollection = function (schema, settings) {
-	if (settings._taxoInfo) {
-		schema
-		.virtual( '_taxoInfo' )
-		.get( settings._taxoInfo );
-	}
-	return mongoose.model( settings.modelName, schema, settings.collection );
-};
-
-var processSingle = function (val, settings) {
-	return new SingleDoc( settings.modelName, val );
-};
-
-var loadBlock = function (tree, blockPath, next) {
-	/* - LOAD APP - */
-	// libs
-	tree.folder( blockPath + '/lib', {
-		hidden: true
-	})
-	// Models
-	.folder( blockPath + '/models', {
-		group : 'models',
-		suffix: 'Model'
-	})
-	.folder( blockPath + '/models/collections', {
-		group : 'models',
-		suffix: 'Model',
-		processing: processCollection
-	})
-	.folder( blockPath + '/models/singles', {
-		group : 'models',
-		suffix: 'Model',
-		processing: processSingle
-	})
-
-	// Controllers
-	.folder( blockPath + '/controllers', {
-		group : 'control',
-		suffix: 'Control'
-	})
-
-	// Services
-	.folder( blockPath + '/services', {
-		group : 'services',
-		suffix: 'Srv'
-	})
-
-	// Utilities
-	.folder( blockPath + '/utilities', {
-		group : 'utilities',
-		suffix: 'Util'
-	})
-
-	// File buckets
-	.folder( blockPath + '/buckets', {
-		group : 'buckets',
-		suffix: 'Bucket'
-	})
-
-	// Routes
-	.folder( blockPath + '/routes', {
-		group: 'router',
-		suffix: 'Router'
-	})
-	.then( next );
-};
-
-var serie = function (tree, blockPaths, callback) {
-	var cursor = 0,
-		limit = blockPaths.length;
-
-	var next = function () {
-		if (cursor === limit) {
-			return callback();
+var serie = function (target, functions, callback) {
+	var fns = functions.slice();
+	callback = callback || function (err) {
+		if (err) { throw err;}
+	};
+	var next = function (err) {
+		if (err) { return callback.call( target, err );}
+		if (!fns.length) {
+			return callback.call( target );
 		}
-		loadBlock( tree, blockPaths[cursor++], next );
+		fns.shift().call( target, next );
 	};
 	next();
 };
 
 
-var loadAppProvider = function (dir, blockPaths) {
-	return function () {
-		console.log( 'Loading tree');
-		var tree = new Wiretree( dir ),
-			app = express(),
-			conf = loadConfig( dir + '/output/build/config' );
-
-		conf.rootPath = dir;
-		resolvePaths( ['rootPath', 'buildFolder', 'tempFolder', 'logPath'], dir, conf );
-		conf.buckets = conf.buckets || {};
-
-		tree
-		.add( 'config', conf )
-		.add( 'express', express )
-		.add( 'app', app )
-		.add( 'mongoose', mongoose )
-		.add( 'safename', safename, {
-			group: 'utilities',
-			localname: 'safename'
-		})
-		.then( function () {
-			serie( tree, blockPaths, function (err) {
-				if (err) { throw err;}
-				tree.resolve( function (err) {
-					if (err) { throw err;}
-					console.log( 'Tree loaded');
-					if (!conf.ssl) {
-						http = require('http');
-						http.createServer( app ).listen( conf.port );
-					} else {
-						https = require('https');
-						https.createServer( conf.sslCert, app ).listen( conf.port );
-					}
-					console.log( 'listening port ' + conf.port );
-				});
-			});
-		});
+// generate a counter tick that fires `callback` when called `limit` times
+var newCounter = function (limit, callback) {
+	var cursor = 0,
+		errors = [];
+	return function (err) {
+		if (err) { errors.push( err );}
+		if (++cursor >= limit) {
+			if (errors.length) { return callback( errors );}
+			callback();
+		}
 	};
 };
 
 
-// Create framework
-var hardwire = function (dir) {
-	// load environment variables from .env file
-	if (fs.existsSync( dir + '/.env' )) {
-		require('dotenv').config({path: dir + '/.env'}).load();
+var Hardwire = function (options, resolve) {
+	options = options || {};
+	this.engine = options.engine;
+	if (!this.engine) {
+		throw new Error('Engine name required');
 	}
-	var blockPaths = getBlockPaths( dir ),
-		corePath = __dirname + '/app';
+	this.folder = path.resolve( options.path || '.');
+	this.output = path.resolve( options.folder, options.output || 'build' );
+	this.buildFolders = ['config'].concat( options.buildFolders || []);
+	this.config = options.config || {};
+	this.environment = options.environment || process.env.NODE_ENV !== 'default' ? process.env.NODE_ENV : false;
+	this.validator = options.validator || false;
+	this.envProcessing = options.envProcessing || {};
+	this.tree = new Wiretree( this.folder );
+	// build stuff
+	if (options.beforeBuild) {
+		this.beforeBuild = options.beforeBuild;
+	}
+	if (options.afterBuild) {
+		this.afterBuild = options.afterBuild;
+	}
+	// config stuff
+	if (options.beforeConfig) {
+		this.beforeConfig = options.beforeConfig;
+	}
+	if (options.afterConfig) {
+		this.afterConfig = options.afterConfig;
+	}
+	// loading stuff
+	if (options.beforeLoad) {
+		this.beforeLoad = options.beforeLoad;
+	}
+	if (options.load) {
+		this.load = options.load;
+	}
+	if (options.afterLoad) {
+		this.afterLoad = options.afterLoad;
+	}
+	// loading stuff
+	if (options.afterAll) {
+		this.afterAll = options.afterAll;
+	}
+	// load environment variables from .env file
+	if (fs.existsSync( this.folder + '/.env' )) {
+		require('dotenv').config({path: this.folder + '/.env'}).load();
+	}
+	if (resolve) {
+		this.resolve();
+	}
+};
 
-	blockPaths = [corePath].concat( blockPaths ).concat( dir + '/app' );
-	// build views, configs and public files
-	builder( dir, blockPaths, loadAppProvider( dir, blockPaths ));
+// Build middleware
+Hardwire.prototype.beforeBuild = function (next) {
+	next();
+};
+Hardwire.prototype.builder = builder;
+Hardwire.prototype.afterBuild = function (next) {
+	next();
 };
 
 
-// expose CMS version
-hardwire.version = pkg.version;
+// Config middleware
+Hardwire.prototype.beforeConfig = function (next) {
+	next();
+};
+Hardwire.prototype.getConfig = getConfig;
+Hardwire.prototype.afterConfig = function (next) {
+	next();
+};
 
 
-// expose `hardwire()`
-module.exports = hardwire;
+// Load middleware
+Hardwire.prototype.beforeLoad = function  (next) {
+	next();
+};
+Hardwire.prototype.load = function (blockPath, next) {
+	next();
+};
+Hardwire.prototype.loadBlocks = function (next) {
+	var self = this,
+		count = newCounter( this.blockPaths.length, next );
+	this.blockPaths.forEach( function (blockPath) {
+		self.load( blockPath, count );
+	});
+};
+Hardwire.prototype.afterLoad = function (next) {
+	next();
+};
 
+Hardwire.prototype.resolve = function () {
+	var self = this;
+	this.blockPaths = [ this.folder + '/node_modules/' + this.engine + '/core' ]
+		.concat( getBlockPaths( this.folder, { validator: this.validator }))
+		.concat( this.folder + '/app');
+	serie( this, [
+		this.beforeBuild,
+		this.builder,
+		this.afterBuild,
+		this.beforeConfig,
+		this.getConfig,
+		this.afterConfig,
+		function (next) {
+			self.tree
+			.add( 'config', self.config )
+			.then( next )
+		},
+		this.beforeLoad,
+		this.loadBlocks,
+		this.afterLoad
+	], function (err) {
+		self.tree.resolve( function (err) {
+			self.afterAll(err)
+		});
+	});
+};
+
+
+// After all
+Hardwire.prototype.afterAll = function (err) {
+	if (err) { throw err;}
+};
+
+module.exports = Hardwire;

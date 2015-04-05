@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+'use strict';
+
+/* add script (boilerplate creator) to package.json  */
+
+var fs = require('fs'),
+	path = require('path'),
+	pkgPath = path.resolve( '../../package.json'),
+	scriptsPath = path.resolve( 'stuff/add-scripts.json'),
+	pkg, scripts, i;
+
+console.log('HARDWIRE: Adding scripts to package.json');
+
+if (fs.existsSync( pkgPath ) && fs.existsSync( scriptsPath )) {
+	pkg = require( pkgPath );
+	scripts = require( scriptsPath );
+
+	for (i in scripts) {
+		pkg.scripts[i] = scripts[i];
+	}
+
+	return fs.writeFile( pkgPath, JSON.stringify( pkg, null, '\t' ), function (err) {
+		if (err) {throw err;}
+	});
+}
