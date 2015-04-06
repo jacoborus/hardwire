@@ -8,12 +8,11 @@ var hardwire = {
 	output: __dirname + '/assets/config/',
 	environment: 'production',
 	envProcessing: {
-		TEST_ONE: 'testone',
+		TEST_ONE: 'base',
 		TEST_TWO: 'test.two'
 	}
 };
 
-process.env.TEST_ONE = 1;
 process.env.TEST_TWO = 2;
 
 describe( 'getBlockPaths', function () {
@@ -24,7 +23,7 @@ describe( 'getBlockPaths', function () {
 			expect( config.default ).to.equal( true );
 			expect( config.production ).to.equal( true );
 			expect( config.base ).to.equal( 1 );
-			expect( config.testone ).to.equal( '1' );
+			expect( typeof config.testone ).to.equal( 'undefined' );
 			expect( config.test.two ).to.equal( '2' );
 			done();
 		});

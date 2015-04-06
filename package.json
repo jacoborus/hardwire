@@ -1,6 +1,6 @@
 {
   "name": "hardwire",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "Structured and scalable node.js app container. WORK IN PROGRESS",
   "main": "index.js",
   "scripts": {
