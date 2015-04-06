@@ -4,7 +4,13 @@ var expect = require('chai').expect,
 	getConfig = require('../lib/getConfig.js');
 
 var hardwire = {
-	config: {base:1},
+	config: {
+		base:1,
+		test: {
+			one: 1,
+			two: 3
+		}
+	},
 	output: __dirname + '/assets/config/',
 	environment: 'production',
 	envProcessing: {
@@ -24,6 +30,7 @@ describe( 'getBlockPaths', function () {
 			expect( config.production ).to.equal( true );
 			expect( config.base ).to.equal( 1 );
 			expect( typeof config.testone ).to.equal( 'undefined' );
+			expect( config.test.one ).to.equal( 1 );
 			expect( config.test.two ).to.equal( '2' );
 			done();
 		});
