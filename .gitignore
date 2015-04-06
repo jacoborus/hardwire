@@ -2,6 +2,7 @@
 !.gitme
 .subl
 node_modules
+!paths/node_modules
 datapack
 npm-debug.log
 public/js/

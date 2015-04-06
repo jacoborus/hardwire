@@ -68,7 +68,6 @@ var Hardwire = function (options, resolve) {
 	this.buildFolders = ['config'].concat( options.buildFolders || []);
 	this.config = options.config || {};
 	this.environment = options.environment || process.env.NODE_ENV !== 'default' ? process.env.NODE_ENV : false;
-	this.validator = options.validator || false;
 	this.envProcessing = options.envProcessing || {};
 	this.tree = new Wiretree( this.folder );
 	// build stuff
@@ -149,7 +148,7 @@ Hardwire.prototype.afterLoad = function (next) {
 Hardwire.prototype.resolve = function () {
 	var self = this;
 	this.blockPaths = [ this.folder + '/node_modules/' + this.engine + '/core' ]
-		.concat( getBlockPaths( this.folder, { validator: this.validator }))
+		.concat( getBlockPaths( this.folder, this.engine ))
 		.concat( this.folder + '/app');
 	serie( this, [
 		this.beforeBuild,
