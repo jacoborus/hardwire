@@ -7,7 +7,7 @@ var path = require('path'),
 
 ncp.limit = 16;
 
-var sourcePath = path.resolve( __dirname, '../../jetkit/boilerplate' ),
+var sourcePath = path.resolve( __dirname, '../../../boilerplate' ),
 	destPath = path.resolve( '.' );
 console.log( sourcePath);
 console.log( destPath);
