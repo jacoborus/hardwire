@@ -1,23 +1,4 @@
 'use strict';
-/*
-- add npm scripts
-- set build folders
-- set build middleware
-- set loader middleware
-- set config middleware
-- set core block
-- set custom block
-- set block params in package.json
-- generate boilerplate
-- set core config
-
-Block folders
-- core block
-- blocks from node_modules
-- blocks from custom block `blocks` folder
-- custom block
- */
-
 
 var Wiretree = require('wiretree'),
 	getBlockPaths = require('./lib/paths.js'),
@@ -100,7 +81,7 @@ var Hardwire = function (options, resolve) {
 	}
 	// load environment variables from .env file
 	if (fs.existsSync( this.folder + '/.env' )) {
-		require('dotenv').config({path: this.folder + '/.env'}).load();
+		require('dotenv').config({ path: this.folder + '/.env' }).load();
 	}
 	if (resolve) {
 		this.resolve();
@@ -160,14 +141,15 @@ Hardwire.prototype.resolve = function () {
 		function (next) {
 			self.tree
 			.add( 'config', self.config )
-			.then( next )
+			.then( next );
 		},
 		this.beforeLoad,
 		this.loadBlocks,
 		this.afterLoad
 	], function (err) {
+		if (err) { return self.afterAll( err );}
 		self.tree.resolve( function (err) {
-			self.afterAll(err)
+			self.afterAll( err );
 		});
 	});
 };
