@@ -96,7 +96,7 @@ var hardwire = new Hardwire({
 		})
 		.folder( blockPath + '/controllers', {
 			group : 'control',
-			suffix: 'Control'
+			suffix: 'Ctrl'
 		})
 		.folder( blockPath + '/routes', {
 			group: 'router',

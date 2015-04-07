@@ -1,6 +1,6 @@
 {
   "name": "hardwire",
-  "version": "0.10.6",
+  "version": "0.10.7",
   "description": "Structured and scalable node.js app container. WORK IN PROGRESS",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,11 @@
     "hw-boilerplate": "./bin/boilerplate"
   },
   "keywords": [
-    "CMS"
+    "dependency injection",
+    "di",
+    "build",
+    "container",
+    "modular"
   ],
   "url": "https://github.com/jacoborus/hardwire",
   "repository": {
