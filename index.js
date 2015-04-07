@@ -44,7 +44,7 @@ var Hardwire = function (options, resolve) {
 	if (!this.engine) {
 		throw new Error('Engine name required');
 	}
-	this.folder = path.resolve( options.path || '.');
+	this.folder = path.resolve( options.folder || '.');
 	this.output = path.resolve( options.folder, options.output || 'build' );
 	this.buildFolders = ['config'].concat( options.buildFolders || []);
 	this.config = options.config || {};

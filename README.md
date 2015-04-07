@@ -20,6 +20,118 @@ Features
 - Environment variables processor
 
 
+Instructions
+------------
+
+Coming soon
+
+
+Express - MongoDB example
+-------------------------
+
+```
+var Hardwire = require('hardwire'),
+	express = require('express'),
+	mongoose = require('mongoose');
+
+var hardwire = new Hardwire({
+	output: 'output/build',
+
+	// folders to build in every block
+	buildFolders: ['public', 'views'],
+
+	// default config
+	config: {port: 3000},
+
+	// force load production environment
+	environment: 'production',
+
+	// rules for adding environment variables into config
+	envProcessing: {
+		// this will set MONGO_URI value from environment variables
+		// into mongodb.uri property of config
+		MONGO_URI: 'mongodb.uri'
+	},
+
+	// to do before build blocks
+	beforeBuild: function (next) {
+		// this.config ....
+		next();
+	},
+
+	// to do after build blocks
+	afterBuild: function (next) {
+		next();
+	},
+
+	// work  with config before load config
+	beforeConfig: function (next) {
+		// this.config ....
+		next();
+	},
+
+	// work with config after load config
+	afterConfig: function (next) {
+		next();
+	},
+
+	// work  with tree before load tree
+	beforeLoad: function (next) {
+		this.tree
+		.add( 'express', express )
+		.add( 'app', express( ))
+		.add( 'mongoose', mongoose )
+		.then( next );
+	},
+
+	// rules for load every block
+	load: function (blockPath, next) {
+		this.tree
+		.folder( blockPath + '/lib', {
+			hidden: true
+		})
+		.folder( blockPath + '/models', {
+			group : 'models',
+			suffix: 'Model'
+		})
+		.folder( blockPath + '/controllers', {
+			group : 'control',
+			suffix: 'Control'
+		})
+		.folder( blockPath + '/routes', {
+			group: 'router',
+			suffix: 'Router'
+		})
+		.then( function () {
+			next();
+		});
+	},
+
+	// work with tree after load tree
+	afterLoad: function (next) {
+		this.tree
+		.add( 'express', express )
+		.add( 'app', express( ))
+		.add( 'mongoose', mongoose )
+		.then( next );
+	},
+
+	// to do after resolve tree
+	afterAll: function (err) {
+		if (err) { throw err;}
+		var app = this.tree.get( 'app' ),
+			http = require('http');
+		http.createServer( app ).listen( this.config.port );
+		console.log( 'listening port ' + this.config.port );
+	}
+
+});
+
+// resolve framework
+hardwire.resolve();
+```
+
+
 <br><br>
 
 ---
