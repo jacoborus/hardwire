@@ -109,14 +109,11 @@ var hardwire = new Hardwire({
 
 	// work with tree after load tree
 	afterLoad: function (next) {
-		this.tree
-		.add( 'express', express )
-		.add( 'app', express( ))
-		.add( 'mongoose', mongoose )
-		.then( next );
+		next();
 	},
 
 	// to do after resolve tree
+	// afterAll catch all middleware errors
 	afterAll: function (err) {
 		if (err) { throw err;}
 		var app = this.tree.get( 'app' ),

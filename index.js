@@ -49,7 +49,7 @@ var Hardwire = function (options, resolve) {
 	this.buildFolders = ['config'].concat( options.buildFolders || []);
 	this.config = options.config || {};
 	this.environment = options.environment || process.env.NODE_ENV !== 'default' ? process.env.NODE_ENV : false;
-	this.envProcessing = options.envProcessing || {};
+	this.envProcessing = options.envProcessing || false;
 	this.tree = new Wiretree( this.folder );
 	// build stuff
 	if (options.beforeBuild) {
