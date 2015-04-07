@@ -29,7 +29,7 @@ Coming soon
 Express - MongoDB example
 -------------------------
 
-```
+```js
 var Hardwire = require('hardwire'),
 	express = require('express'),
 	mongoose = require('mongoose');

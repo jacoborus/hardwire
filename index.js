@@ -40,7 +40,7 @@ var newCounter = function (limit, callback) {
 
 var Hardwire = function (options, resolve) {
 	options = options || {};
-	this.engine = options.engine;
+	this.engine = options.engine || false;
 	if (!this.engine) {
 		throw new Error('Engine name required');
 	}
